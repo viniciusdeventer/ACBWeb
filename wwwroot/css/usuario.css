@@ -1,0 +1,26 @@
+﻿.background {
+    background-image: url(../assets/images/background.png);
+    background-repeat: repeat;
+    background-size: 30%;
+    width: 100%;
+    height: 100vh;
+}
+
+.btn-pers {
+    background-color: #FF9500;
+    color: #fff;
+}
+
+.custom-card {
+    max-width: 500px;
+    width: 100%;
+    min-height: 400px;
+}
+
+.form-control {
+    border: none;
+    border-bottom: 2px solid #223870;
+    border-radius: 0;
+    box-shadow: none;
+    transition: all 0.5s ease;
+}
