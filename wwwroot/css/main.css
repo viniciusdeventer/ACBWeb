@@ -14,6 +14,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    top: 0;
 }
 
 .menu-nav {
@@ -66,6 +67,11 @@ header {
     height: 75px;
     width: 100%;
     background-color: #FFFFFF;
+    position: fixed;
+    top: 0;
+    margin-top: 0;
+    left: 0;
+    z-index: 1000;
 }
 
 header img {
@@ -84,4 +90,43 @@ header img {
 
 .offcanvas-end {
     width: 250px !important;
+}
+
+.hero {
+    background-color: #FFFFFF;
+    margin: 20px;
+    border-radius: 1rem;
+    height: 100%;
+}
+
+.conteudo {
+    margin-left: 75px; 
+    padding-top: 75px; 
+    margin-bottom: 20px;
+}
+
+.titulo {
+    color: #223870;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #ced4da;
+    outline: none;
+}
+
+.btn-primary {
+    background-color: #223870 !important;
+    border-color: #223870 !important;
+    outline: none;
+}
+
+.btn-warning {
+    background-color: #FF9500 !important;
+}
+
+.btn-primary:focus, .btn-warning:focus {
+    box-shadow: none;
+    border-color: #ced4da;
+    outline: none;
 }
