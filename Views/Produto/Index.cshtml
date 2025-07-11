@@ -1,5 +1,9 @@
 ﻿@model List<ACBWeb.Models.Produto>
 
+@section Scripts {
+    <script src="~/js/produto.js"></script>
+}
+
 @{
     ViewBag.Title = "Produtos";
 }
@@ -19,10 +23,8 @@
                     </button>
                 </div>
             </form>
-            <form method="POST">
-                @await Html.PartialAsync("_Table", Model)
-                @await Html.PartialAsync("_Botoes")
-            </form>
+            @await Html.PartialAsync("_Table", Model)
+            @await Html.PartialAsync("_Botoes")
         </div>
     </div>
 </main>

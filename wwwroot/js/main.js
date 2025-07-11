@@ -1,9 +1,13 @@
-﻿// Captura o caminho da URL atual (ex: "/clientes.html")
-const currentPath = window.location.pathname;
+﻿document.addEventListener("DOMContentLoaded", function () {
+    const currentPath = window.location.pathname.toLowerCase();
+    const menuItems = document.querySelectorAll(".menu-item");
 
-// Seleciona todos os itens de menu
-document.querySelectorAll('.menu-item a').forEach(link => {
-    if (link.getAttribute('href') === currentPath) {
-    link.parentElement.classList.add('active');
-    }
+    menuItems.forEach(item => {
+        const link = item.querySelector("a");
+        const href = link.getAttribute("href").toLowerCase();
+
+        if (currentPath.includes(href.replace("..", ""))) {
+            item.classList.add("active");
+        }
+    });
 });

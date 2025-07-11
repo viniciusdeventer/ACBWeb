@@ -130,3 +130,26 @@ header img {
     border-color: #ced4da;
     outline: none;
 }
+
+.btn-outline-primary {
+    border-color: #223870 !important;
+    color: #223870 !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: #223870 !important;
+    border-color: #223870 !important;
+    color: #FFFFFF !important;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[readonly] {
+    background-color: #e9ecef;
+    opacity: 1;
+    cursor: default;
+}

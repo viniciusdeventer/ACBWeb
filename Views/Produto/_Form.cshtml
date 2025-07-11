@@ -1,35 +1,65 @@
 ﻿@model ACBWeb.Models.Produto
 
-<form method="post" asp-action="Salvar" asp-controller="Produto">
-    <div class="row">
-        <div class="form-group readonly">
+@{
+    var imagemSrc = !string.IsNullOrEmpty(Model.Imagem)
+        ? Url.Content("~/" + Model.Imagem)
+        : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAAFUlEQVR4nO3BMQEAAAgDoJvcf+FDMwAAAAAAAAAAwEsCdgAAXwscxQAAAABJRU5ErkJggg==";
+}
+
+<form method="POST" id="formProduto" action="/Produto/Salvar" enctype="multipart/form-data">
+    <div class="row mb-3">
+        <div class="col-md-2">
             <label asp-for="IdProduto" class="form-label">ID</label>
-            <input asp-for="IdProduto" class="form-control" />
+            <input asp-for="IdProduto" class="form-control" readonly tabindex="-1" onfocus="this.blur()"/>
         </div>
-
-        <div class="form-group">
+        <div class="col-md-10">
             <label asp-for="Nome" class="form-label">Nome</label>
-            <input asp-for="Nome" class="form-control"/>
+            <input asp-for="Nome" class="form-control" />
         </div>
     </div>
 
-    <div class="form-group">
-        <label asp-for="Descricao" class="form-label">Descrição</label>
-        <textarea asp-for="Descricao" class="form-control"></textarea>
+    <div class="row align-items-center" style="gap: 2rem;">
+        <div class="col-md-9 mb-3">
+            <label asp-for="Descricao" class="form-label">Descrição</label>
+            <textarea asp-for="Descricao" class="form-control" rows="4"></textarea>
+        </div>
+
+        <div class="col-md-2 mb-2 d-flex flex-column align-items-center">
+            <label asp-for="Imagem" class="form-label" style="margin-right: 95px;">Imagem</label>
+            <div class="d-flex align-items-center gap-2">
+                <div class="border rounded mb-2 d-flex justify-content-center align-items-center" style="width: 115px; height: 115px; overflow: hidden;">
+                    <img id="preview" src="@imagemSrc" style="width: 100%; height: 100%; object-fit: cover;" onclick="document.getElementById('ImagemUpload').click()" />
+                </div>
+
+                <input type="file" id="ImagemUpload" name="ImagemUpload" accept="image/*" onchange="previewImagem(this)" hidden />
+                <div class="d-flex flex-column">
+                    <button type="button" class="btn btn-primary btn-sm mb-2" onclick="document.getElementById('ImagemUpload').click()">
+                        <i class="fas fa-plus"></i>
+                    </button>
+
+                    <button type="button" class="btn btn-outline-primary btn-sm" onclick="limparImagem()">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="row">
-        <div class="form-group">
+    <div class="row mb-3">
+        <div class="col-md-3">
             <label asp-for="ValorProduto" class="form-label">Valor</label>
-            <input asp-for="ValorProduto" class="form-control" type="number" />
+            <input asp-for="ValorProduto" class="form-control" type="number" placeholder="0,00" />
         </div>
-
-        <div class="form-group">
+        <div class="col-md-3">
             <label asp-for="Status" class="form-label">Status</label>
             <select asp-for="Status" class="form-select">
                 <option value="1">Ativo</option>
                 <option value="0">Inativo</option>
             </select>
+        </div>
+        <div class="col-md-3 ms-auto">
+            <label asp-for="DataCadastro" class="form-label">Data Cadastro</label>
+            <input asp-for="DataCadastro" class="form-control" type="text" readonly tabindex="-1" onfocus="this.blur()" />
         </div>
     </div>
 
