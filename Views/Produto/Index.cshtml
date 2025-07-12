@@ -1,7 +1,7 @@
 ﻿@model List<ACBWeb.Models.Produto>
 
 @section Scripts {
-    <script src="~/js/produto.js"></script>
+    <script src="~/js/produto.js" asp-append-version="true"></script>
 }
 
 @{
@@ -15,16 +15,13 @@
     <div class="hero">
         <div class="container py-4">
             <h4 class="titulo mb-3">Produtos</h4>
-            <form method="POST" asp-controller="Produto" asp-action="Index">
-                <div class="input-group">
-                    <input type="search" class="form-control" name="termo" placeholder="Digite aqui o que gostaria de pesquisar..." aria-label="Pesquisa">
-                    <button class="btn btn-primary" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </form>
+            <div class="input-group">
+                <input type="search" id="pesquisa-termo" class="form-control" placeholder="Digite aqui o que gostaria de pesquisar..." aria-label="Pesquisa">
+                <button class="btn btn-primary" id="btn-pesquisar" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
             @await Html.PartialAsync("_Lista", Model)
-            @await Html.PartialAsync("_Botoes")
         </div>
     </div>
 </main>

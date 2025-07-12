@@ -11,19 +11,22 @@ namespace ACBWeb.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(int pagina = 1, int tamanhoPagina = 10)
         {
-            return View();
-        }
+            var todos = produtoDAO.GetProdutos();
 
-        [HttpPost]
-        public IActionResult Index(string termo)
-        {
-            List<Produto> produtos = string.IsNullOrEmpty(termo)
-                ? produtoDAO.GetProdutos()
-                : produtoDAO.BuscarProduto(termo);
+            int totalItens = todos.Count;
+            var produtosPaginados = todos
+                .Skip((pagina - 1) * tamanhoPagina)
+                .Take(tamanhoPagina)
+                .ToList();
 
-            return View(produtos);
+            ViewBag.Termo = "";
+            ViewBag.PaginaAtual = pagina;
+            ViewBag.TotalItens = totalItens;
+            ViewBag.TamanhoPagina = tamanhoPagina;
+
+            return View(produtosPaginados);
         }
 
         [HttpPost]
@@ -61,28 +64,47 @@ namespace ACBWeb.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        public IActionResult ExcluirSelecionados(int[] selecionados)
-        {
-            if (selecionados != null && selecionados.Any())
-            {
-                foreach (var id in selecionados)
-                {
-                    produtoDAO.Excluir(id);
-                }
-            }
-
-            return RedirectToAction("Index");
-        }
-
         [HttpGet]
-        public IActionResult Buscar(int id)
+        public IActionResult BuscarPorId(int id)
         {
             var produto = produtoDAO.BuscarPorId(id);
             if (produto == null)
                 return NotFound();
 
             return PartialView("_Form", produto);
+        }
+
+        [HttpGet]
+        public IActionResult Pesquisar(string termo, int pagina = 1, int tamanhoPagina = 10)
+        {
+            var todos = string.IsNullOrEmpty(termo)
+                ? produtoDAO.GetProdutos()
+                : produtoDAO.BuscarProduto(termo);
+
+            int totalItens = todos.Count;
+            var produtosPaginados = todos
+                .Skip((pagina - 1) * tamanhoPagina)
+                .Take(tamanhoPagina)
+                .ToList();
+
+            ViewBag.Termo = termo;
+            ViewBag.PaginaAtual = pagina;
+            ViewBag.TotalItens = totalItens;
+            ViewBag.TamanhoPagina = tamanhoPagina;
+
+            return PartialView("_Lista", produtosPaginados);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Excluir([FromBody] List<int> ids)
+        {
+            foreach (var id in ids)
+            {
+                produtoDAO.Excluir(id);
+            }
+
+            return Ok();
         }
     }
 }

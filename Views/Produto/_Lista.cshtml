@@ -1,26 +1,28 @@
 ﻿@model List<ACBWeb.Models.Produto>
-
-<div class="row row-cols-1 row-cols-md-5 g-4 mt-3">
-    @if (Model != null && Model.Any())
-    {
-        foreach (var produto in Model)
+<div id="produtos-container">
+    <div class="row row-cols-1 row-cols-md-5 g-4 mt-1">
+        @if (Model != null && Model.Any())
         {
-            var imagemSrc = !string.IsNullOrEmpty(produto.Imagem)
-            ? Url.Content("~/" + produto.Imagem)
-            : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAAFUlEQVR4nO3BMQEAAAgDoJvcf+FDMwAAAAAAAAAAwEsCdgAAXwscxQAAAABJRU5ErkJggg==";
+            foreach (var produto in Model)
+            {
+                var imagemSrc = !string.IsNullOrEmpty(produto.Imagem)
+                ? Url.Content("~/" + produto.Imagem)
+                : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAAFUlEQVR4nO3BMQEAAAgDoJvcf+FDMwAAAAAAAAAAwEsCdgAAXwscxQAAAABJRU5ErkJggg==";
 
-            <div class="col">
-                <div class="card h-100 d-flex flex-column" style="cursor:pointer" data-id="@produto.IdProduto" onclick="abrirModalProduto(@produto.IdProduto)">
-                    <img src="@imagemSrc" alt="Imagem do Produto" class="d-block mx-auto" style="object-fit: cover; max-height: 150px; max-width: 150px;" />
-                    <div class="card-body">
-                        <h6 class="card-title">@produto.Nome</h6>
-                        <p class="card-text" style="font-size: 14px;">@produto.Descricao</p>
-                    </div>
-                    <div class="ms-auto px-3 pb-2">
-                        <strong style="font-size: 14px; color: #FF9500;">R$@produto.ValorProduto</strong>
+                <div class="col">
+                    <div class="card h-100 d-flex flex-column select" style="cursor:pointer" data-id="@produto.IdProduto" ondblclick="abrirModalProduto(@produto.IdProduto)">
+                        <img src="@imagemSrc" alt="Imagem do Produto" class="d-block mx-auto" style="object-fit: cover; max-height: 150px; max-width: 150px;" />
+                        <div class="card-body">
+                            <h6 class="card-title">@produto.Nome</h6>
+                            <p class="card-text" style="font-size: 14px;">@produto.Descricao</p>
+                        </div>
+                        <div class="ms-auto px-3 pb-2">
+                            <strong style="font-size: 14px; color: #FF9500;">R$@produto.ValorProduto</strong>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         }
-    }
+    </div>
+    @await Html.PartialAsync("_Paginacao")
 </div>
