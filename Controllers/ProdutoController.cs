@@ -13,8 +13,7 @@ namespace ACBWeb.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var produtos = produtoDAO.GetProdutos();
-            return View(produtos);
+            return View();
         }
 
         [HttpPost]
@@ -25,23 +24,6 @@ namespace ACBWeb.Controllers
                 : produtoDAO.BuscarProduto(termo);
 
             return View(produtos);
-        }
-
-        [HttpPost]
-        public IActionResult Teste(IFormCollection form, IFormFile ImagemUpload)
-        {
-            var debug = new
-            {
-                Nome = form["Nome"],
-                Descricao = form["Descricao"],
-                ValorProduto = form["ValorProduto"],
-                Status = form["Status"],
-                DataCadastro = form["DataCadastro"],
-                TemImagem = ImagemUpload != null ? "SIM" : "NAO",
-                NomeArquivo = ImagemUpload?.FileName
-            };
-
-            return Json(debug);
         }
 
         [HttpPost]
@@ -65,8 +47,15 @@ namespace ACBWeb.Controllers
 
                 produto.Imagem = $"imagens/produtos/{nomeArquivo}";
             }
+            else
+            {
+                produto.Imagem = Request.Form["Imagem"];
+            }
 
-            Console.WriteLine($"Nome: {produto.Nome}, Descricao: {produto.Descricao}, Valor: {produto.ValorProduto}");
+            string valorStr = Request.Form["ValorProduto"];
+            valorStr = valorStr.Replace(".", "").Replace(",", ".");
+            decimal valor = decimal.Parse(valorStr, System.Globalization.CultureInfo.InvariantCulture);
+            produto.ValorProduto = valor;
 
             new ProdutoDAO().Salvar(produto);
             return RedirectToAction("Index");
@@ -84,6 +73,16 @@ namespace ACBWeb.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Buscar(int id)
+        {
+            var produto = produtoDAO.BuscarPorId(id);
+            if (produto == null)
+                return NotFound();
+
+            return PartialView("_Form", produto);
         }
     }
 }

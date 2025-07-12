@@ -23,17 +23,16 @@
                     </button>
                 </div>
             </form>
-            @await Html.PartialAsync("_Table", Model)
+            @await Html.PartialAsync("_Lista", Model)
             @await Html.PartialAsync("_Botoes")
         </div>
     </div>
 </main>
 
-<div class="modal fade" id="modalProduto" tabindex="-1" aria-labelledby="modalProdutoLabel" aria-hidden="true">
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalProdutoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalProdutoLabel">Novo Produto</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
             </div>
             <div class="modal-body">

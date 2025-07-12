@@ -22,7 +22,8 @@ namespace ACBWeb.DAL.DAO
                              " Imagem, " +
                              " Valor_Produto, " +
                              " Status, " +
-                             " Data_Cadastro FROM Produtos";
+                             " Data_Cadastro FROM Produtos" +
+                             " WHERE Status = 1";
 
                 using (var cmd = new MySqlCommand(sql, conn))
                 using (var reader = cmd.ExecuteReader())
@@ -54,9 +55,9 @@ namespace ACBWeb.DAL.DAO
             {
                 if (conn == null) return lista;
 
-                string sql = @"SELECT ID_Produto, Nome, Descricao, Imagem
+                string sql = @"SELECT ID_Produto, Nome, Descricao, Imagem, Valor_Produto, Status, Data_Cadastro
                                FROM Produtos 
-                               WHERE Nome LIKE @Termo";
+                               WHERE Nome LIKE @Termo AND Status = 1";
 
                 using (var cmd = new MySqlCommand(sql, conn))
                 {
@@ -71,7 +72,10 @@ namespace ACBWeb.DAL.DAO
                                 IdProduto = reader.GetInt32("ID_Produto"),
                                 Nome = reader.GetString("Nome"),
                                 Descricao = reader.GetString("Descricao"),
-                                Status = reader.GetInt32("Status")
+                                Imagem = reader.GetString("Imagem"),
+                                ValorProduto = reader.GetDecimal("Valor_Produto"),
+                                Status = reader.GetInt32("Status"),
+                                DataCadastro = reader.GetDateTime("Data_Cadastro")
                             });
                         }
                     }
@@ -80,6 +84,42 @@ namespace ACBWeb.DAL.DAO
 
             return lista;
         }
+        public Produto BuscarPorId(int IdProduto)
+        {
+            using (var conn = Conexao.GetConnection())
+            {
+                if (conn == null) return null;
+
+                string sql = @"SELECT ID_Produto, Nome, Descricao, Imagem, Valor_Produto, Status, Data_Cadastro
+                       FROM Produtos 
+                       WHERE ID_Produto = @IdProduto AND Status = 1";
+
+                using (var cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@IdProduto", IdProduto);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new Produto
+                            {
+                                IdProduto = reader.GetInt32("ID_Produto"),
+                                Nome = reader.GetString("Nome"),
+                                Descricao = reader.GetString("Descricao"),
+                                Imagem = reader.GetString("Imagem"),
+                                ValorProduto = reader.GetDecimal("Valor_Produto"),
+                                Status = reader.GetInt32("Status"),
+                                DataCadastro = reader.GetDateTime("Data_Cadastro")
+                            };
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
         public void Salvar(Produto produto)
         {
             using (var conn = Conexao.GetConnection())
