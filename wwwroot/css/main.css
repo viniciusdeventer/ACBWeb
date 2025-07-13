@@ -95,7 +95,6 @@ header img {
 .hero {
     background-color: #FFFFFF;
     margin: 20px;
-    border-radius: 1rem;
     min-height: calc(100vh - 75px - 40px);
     display: flex;
     flex-direction: column;
@@ -170,6 +169,19 @@ input[readonly] {
     background-color: transparent;
 }
 
-.select.selected {
-    background-color: #FF9500;
+.pagination .page-link {
+    color: #223870;
+    background-color: white;
+    border-radius: 50%;
 }
+
+.pagination .page-item.active .page-link {
+    background-color: #223870;
+    border-color: #223870;
+    color: white;
+}
+
+.pagination .page-item .page-link {
+    border: none;
+}
+

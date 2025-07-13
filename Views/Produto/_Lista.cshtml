@@ -10,7 +10,7 @@
                 : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAAFUlEQVR4nO3BMQEAAAgDoJvcf+FDMwAAAAAAAAAAwEsCdgAAXwscxQAAAABJRU5ErkJggg==";
 
                 <div class="col">
-                    <div class="card h-100 d-flex flex-column select" style="cursor:pointer" data-id="@produto.IdProduto" ondblclick="abrirModalProduto(@produto.IdProduto)">
+                    <div class="card h-100 d-flex flex-column select" style="cursor:pointer" data-id="@produto.IdProduto" onclick="abrirModalProduto(@produto.IdProduto)">
                         <img src="@imagemSrc" alt="Imagem do Produto" class="d-block mx-auto" style="object-fit: cover; max-height: 150px; max-width: 150px;" />
                         <div class="card-body">
                             <h6 class="card-title">@produto.Nome</h6>

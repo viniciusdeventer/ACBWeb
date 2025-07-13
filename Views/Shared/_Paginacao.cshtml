@@ -7,33 +7,30 @@
     int totalPaginas = (int)Math.Ceiling((double)totalItens / tamanhoPagina);
 }
 
-@if (totalPaginas > 1)
-{
-    <nav class="d-flex justify-content-between align-items-center">
-        <ul class="pagination mb-0">
-            <li class="page-item @(paginaAtual == 1 ? "disabled" : "")">
-                <a href="#" class="page-link arrow" data-pagina="@(paginaAtual - 1)">
-                    <i class="fa-solid fa-arrow-left"></i> Anterior
-                </a>
-            </li>
+<nav class="d-flex justify-content-between align-items-center">
+    <ul class="pagination mb-0">
+        <li class="page-item @(paginaAtual == 1 ? "disabled" : "")">
+            <a href="#" class="page-link arrow" data-pagina="@(paginaAtual - 1)">
+                <i class="fa-solid fa-arrow-left"></i> Anterior
+            </a>
+        </li>
 
-            @for (int i = 1; i <= totalPaginas; i++)
-            {
-                <li class="page-item @(i == paginaAtual ? "active" : "")">
-                    <a href="#" class="page-link" data-pagina="@i">@i</a>
-                </li>
-            }
-
-            <li class="page-item @(paginaAtual == totalPaginas ? "disabled" : "")">
-                <a href="#" class="page-link arrow" data-pagina="@(paginaAtual + 1)">
-                    Próximo <i class="fa-solid fa-arrow-right"></i>
-                </a>
+        @for (int i = 1; i <= totalPaginas; i++)
+        {
+            <li class="page-item @(i == paginaAtual ? "active" : "")">
+                <a href="#" class="page-link" data-pagina="@i">@i</a>
             </li>
-        </ul>
-        <div>
-            @await Html.PartialAsync("_Botoes")
-        </div>
-    </nav>
-}
+        }
+
+        <li class="page-item @(paginaAtual == totalPaginas ? "disabled" : "")">
+            <a href="#" class="page-link arrow" data-pagina="@(paginaAtual + 1)">
+                Próximo <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </li>
+    </ul>
+    <div>
+        @await Html.PartialAsync("_Botoes")
+    </div>
+</nav>
 
 

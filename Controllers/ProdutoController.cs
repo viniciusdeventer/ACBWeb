@@ -94,18 +94,6 @@ namespace ACBWeb.Controllers
 
             return PartialView("_Lista", produtosPaginados);
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Excluir([FromBody] List<int> ids)
-        {
-            foreach (var id in ids)
-            {
-                produtoDAO.Excluir(id);
-            }
-
-            return Ok();
-        }
     }
 }
 

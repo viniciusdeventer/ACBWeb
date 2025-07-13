@@ -23,7 +23,8 @@ namespace ACBWeb.DAL.DAO
                              " Valor_Produto, " +
                              " Status, " +
                              " Data_Cadastro FROM Produtos" +
-                             " WHERE Status = 1";
+                             " WHERE Status = 1" +
+                             " ORDER BY Nome ";
 
                 using (var cmd = new MySqlCommand(sql, conn))
                 using (var reader = cmd.ExecuteReader())
@@ -57,7 +58,8 @@ namespace ACBWeb.DAL.DAO
 
                 string sql = @"SELECT ID_Produto, Nome, Descricao, Imagem, Valor_Produto, Status, Data_Cadastro
                                FROM Produtos 
-                               WHERE Nome LIKE @Termo AND Status = 1";
+                               WHERE Nome LIKE @Termo AND Status = 1
+                               ORDER BY Nome";
 
                 using (var cmd = new MySqlCommand(sql, conn))
                 {
@@ -90,9 +92,16 @@ namespace ACBWeb.DAL.DAO
             {
                 if (conn == null) return null;
 
-                string sql = @"SELECT ID_Produto, Nome, Descricao, Imagem, Valor_Produto, Status, Data_Cadastro
-                       FROM Produtos 
-                       WHERE ID_Produto = @IdProduto AND Status = 1";
+                string sql = @"SELECT ID_Produto, 
+                                      Nome, 
+                                      Descricao, 
+                                      Imagem, 
+                                      Valor_Produto, 
+                                      Status, 
+                                      Data_Cadastro
+                               FROM Produtos 
+                               WHERE ID_Produto = @IdProduto 
+                               AND Status = 1";
 
                 using (var cmd = new MySqlCommand(sql, conn))
                 {
@@ -159,19 +168,6 @@ namespace ACBWeb.DAL.DAO
                         cmd.Parameters.AddWithValue("@IdProduto", produto.IdProduto);
                     }
 
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
-
-        public void Excluir(int id)
-        {
-            using (var conn = Conexao.GetConnection())
-            {
-                string sql = "UPDATE Produtos SET Status = 0 WHERE ID_Produto = @IdProduto";
-                using (var cmd = new MySqlCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@IdProduto", id);
                     cmd.ExecuteNonQuery();
                 }
             }
