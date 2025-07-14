@@ -33,13 +33,13 @@ namespace ACBWeb.DAL.DAO
                     {
                         lista.Add(new Produto
                         {
-                            IdProduto = reader.GetInt32("ID_Produto"),
-                            Nome = reader.GetString("Nome"),
-                            Descricao = reader.GetString("Descricao"),
-                            Imagem = reader.GetString("Imagem"),
-                            ValorProduto = reader.GetDecimal("Valor_Produto"),
-                            Status = reader.GetInt32("Status"),
-                            DataCadastro = reader.GetDateTime("Data_Cadastro")
+                            IdProduto = reader.GetNullableInt("ID_Produto"),
+                            Nome = reader.GetNullableString("Nome"),
+                            Descricao = reader.GetNullableString("Descricao"),
+                            Imagem = reader.GetNullableString("Imagem"),
+                            ValorProduto = reader.GetNullableDecimal("Valor_Produto"),
+                            Status = reader.GetNullableInt("Status"),
+                            DataCadastro = reader.GetNullableDateTime("Data_Cadastro")
                         });
                     }
                 }
@@ -63,7 +63,7 @@ namespace ACBWeb.DAL.DAO
 
                 using (var cmd = new MySqlCommand(sql, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Termo", "%" + termo + "%");
+                    cmd.Parameters.AddWithValue("@Termo", termo + "%");
 
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -71,13 +71,13 @@ namespace ACBWeb.DAL.DAO
                         {
                             lista.Add(new Produto
                             {
-                                IdProduto = reader.GetInt32("ID_Produto"),
-                                Nome = reader.GetString("Nome"),
-                                Descricao = reader.GetString("Descricao"),
-                                Imagem = reader.GetString("Imagem"),
-                                ValorProduto = reader.GetDecimal("Valor_Produto"),
-                                Status = reader.GetInt32("Status"),
-                                DataCadastro = reader.GetDateTime("Data_Cadastro")
+                                IdProduto = reader.GetNullableInt("ID_Produto"),
+                                Nome = reader.GetNullableString("Nome"),
+                                Descricao = reader.GetNullableString("Descricao"),
+                                Imagem = reader.GetNullableString("Imagem"),
+                                ValorProduto = reader.GetNullableDecimal("Valor_Produto"),
+                                Status = reader.GetNullableInt("Status"),
+                                DataCadastro = reader.GetNullableDateTime("Data_Cadastro")
                             });
                         }
                     }
@@ -113,13 +113,13 @@ namespace ACBWeb.DAL.DAO
                         {
                             return new Produto
                             {
-                                IdProduto = reader.GetInt32("ID_Produto"),
-                                Nome = reader.GetString("Nome"),
-                                Descricao = reader.GetString("Descricao"),
-                                Imagem = reader.GetString("Imagem"),
-                                ValorProduto = reader.GetDecimal("Valor_Produto"),
-                                Status = reader.GetInt32("Status"),
-                                DataCadastro = reader.GetDateTime("Data_Cadastro")
+                                IdProduto = reader.GetNullableInt("ID_Produto"),
+                                Nome = reader.GetNullableString("Nome"),
+                                Descricao = reader.GetNullableString("Descricao"),
+                                Imagem = reader.GetNullableString("Imagem"),
+                                ValorProduto = reader.GetNullableDecimal("Valor_Produto"),
+                                Status = reader.GetNullableInt("Status"),
+                                DataCadastro = reader.GetNullableDateTime("Data_Cadastro")
                             };
                         }
                     }

@@ -1,0 +1,41 @@
+﻿@model List<ACBWeb.Models.Cliente>
+
+@section Scripts {
+    <script src="~/js/cliente.js" asp-append-version="true"></script>
+}
+
+@{
+    ViewBag.Title = "Clientes";
+}
+
+@await Html.PartialAsync("_Sidebar")
+@await Html.PartialAsync("_Navbar")
+
+<main class="conteudo">
+    <div class="hero">
+        <div class="container py-4">
+            <h4 class="titulo mb-3">Clientes</h4>
+            <div class="input-group">
+                <input type="search" id="pesquisa-termo" class="form-control" placeholder="Digite aqui o que gostaria de pesquisar..." aria-label="Pesquisa">
+                <button class="btn btn-primary" id="btn-pesquisar" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            @await Html.PartialAsync("_Table", Model)
+        </div>
+    </div>
+</main>
+
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalClienteLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                @await Html.PartialAsync("_Form", new ACBWeb.Models.Cliente())
+            </div>
+        </div>
+    </div>
+</div>
+

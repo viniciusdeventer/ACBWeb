@@ -10,11 +10,11 @@
     <div class="row mb-3">
         <div class="col-md-2">
             <label for="IdProduto" class="form-label">ID</label>
-            <input name="IdProduto" class="form-control" readonly tabindex="-1" onfocus="this.blur()" value="@Model?.IdProduto" />
+            <input name="IdProduto" class="form-control" readonly tabindex="-1" onfocus="this.blur()" value="@Model?.IdProduto"/>
         </div>
         <div class="col-md-10">
             <label for="Nome" class="form-label">Nome</label>
-            <input name="Nome" class="form-control" value="@Model?.Nome"/>
+            <input name="Nome" class="form-control" value="@Model?.Nome" required/>
         </div>
     </div>
 
@@ -49,7 +49,7 @@
     <div class="row mb-3">
         <div class="col-md-3">
             <label for="ValorProduto" class="form-label">Valor</label>
-            <input name="ValorProduto" id="ValorProduto" class="form-control" type="text" placeholder="0,00" value="@Model?.ValorProduto"/>
+            <input name="ValorProduto" id="ValorProduto" class="form-control" type="text" placeholder="0,00" value="@Model?.ValorProduto" required/>
         </div>
         <div class="col-md-3">
             <label for="Status" class="form-label">Status</label>

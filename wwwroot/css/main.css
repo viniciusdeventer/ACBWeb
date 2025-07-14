@@ -81,6 +81,7 @@ header img {
 
 .header-bar {
     margin-right: 15px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .search {
@@ -172,7 +173,6 @@ input[readonly] {
 .pagination .page-link {
     color: #223870;
     background-color: white;
-    border-radius: 50%;
 }
 
 .pagination .page-item.active .page-link {
@@ -185,3 +185,23 @@ input[readonly] {
     border: none;
 }
 
+.table-striped > tbody > tr:nth-of-type(even) {
+    --bs-table-accent-bg: white;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+    --bs-table-accent-bg: #ff950087;
+}
+
+.table thead th, .table tbody td {
+    border-bottom: none;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.modal-header {
+    border: none;
+    padding-bottom: 0;
+}
