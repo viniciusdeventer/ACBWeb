@@ -1,6 +1,7 @@
 ﻿@model List<ACBWeb.Models.Conta>
-<div id="clientes-container">
-    <table class='table table-hover mt-3 table-striped'>
+
+<div id="contas-container">
+    <table class='table table-hover table-striped'>
         <thead>
             <tr>
                 <th class="text-center">ID</th>
@@ -15,12 +16,19 @@
                 {
                     <tr data-id="@conta.IdConta" onclick="abrirModalConta(@conta.IdConta)" style="cursor: pointer;">
                         <td class="text-center align-middle">@conta.IdConta</td>
-                        <td class="text-center align-middle">@conta.DataAbertura</td>
-                        <td class="text-center align-middle">@conta.Situacao</td>
+                        <td class="text-center align-middle">@conta.DataAbertura?.ToString("dd/MM/yyyy")</td>
+                        <td class="text-center align-middle">
+                            @(conta.Situacao == 0 ? "Em Aberto" :
+                            conta.Situacao == 1 ? "Pago" :
+                            conta.Situacao == 2 ? "Pago Parcial" : "")
+                        </td>
                     </tr>
                 }
             }
         </tbody>
     </table>
+    @{
+        ViewBag.ModalId = "modalConta";
+    }
     @await Html.PartialAsync("_Paginacao")
 </div>

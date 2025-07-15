@@ -10,9 +10,9 @@ namespace ACBWeb.Controllers
         private readonly ContaDAO contaDAO = new ContaDAO();
 
         [HttpGet]
-        public IActionResult DetalhesContas(int idCliente)
+        public IActionResult Index(int id)
         {
-            var contas = contaDAO.GetContas(idCliente);
+            var contas = contaDAO.GetContas(id);
             return View(contas);
         }
 
@@ -30,11 +30,9 @@ namespace ACBWeb.Controllers
         }
 
         [HttpGet]
-        public IActionResult BuscarContaPorId(int idConta)
+        public IActionResult BuscarContaPorId(int id)
         {
-            var conta = contaDAO.BuscarPorId(idConta);
-            if (conta == null) return NotFound();
-
+            var conta = contaDAO.BuscarPorId(id);
             return PartialView("_Form", conta);
         }
     }

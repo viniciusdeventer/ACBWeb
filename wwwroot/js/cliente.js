@@ -2,22 +2,23 @@
     fetch(`/Cliente/BuscarPorId/${idCliente}`)
         .then(response => response.text())
         .then(html => {
-            document.querySelector('#modal .modal-body').innerHTML = html;
-            var modal = new bootstrap.Modal(document.getElementById('modal'));
+            document.querySelector('#modalCliente .modal-body').innerHTML = html;
+            var modal = new bootstrap.Modal(document.getElementById('modalCliente'));
             modal.show();
         });
 }
 
-let modalLimpo;
+let modalClienteLimpo;
 
 document.addEventListener('DOMContentLoaded', function () {
-    const modal = document.getElementById('modal');
-    const modalBody = modal.querySelector('.modal-body');
+    const modal = document.getElementById('modalCliente');
+    if (!modal) return;
 
-    modalLimpo = modalBody.innerHTML;
+    const modalBody = modal.querySelector('.modal-body');
+    modalClienteLimpo = modalBody.innerHTML;
 
     modal.addEventListener('hidden.bs.modal', function () {
-        modalBody.innerHTML = modalLimpo;
+        modalBody.innerHTML = modalClienteLimpo;
     });
 });
 

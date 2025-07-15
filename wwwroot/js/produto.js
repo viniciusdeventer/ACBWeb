@@ -27,8 +27,8 @@ function abrirModalProduto(idProduto) {
     fetch(`/Produto/BuscarPorId/${idProduto}`)
         .then(response => response.text())
         .then(html => {
-            document.querySelector('#modal .modal-body').innerHTML = html;
-            var modal = new bootstrap.Modal(document.getElementById('modal'));
+            document.querySelector('#modalProduto .modal-body').innerHTML = html;
+            var modal = new bootstrap.Modal(document.getElementById('modalProduto'));
             modal.show();
         });
 }
@@ -54,7 +54,7 @@ function parseValorProduto(valorStr) {
 let modalLimpo;
 
 document.addEventListener('DOMContentLoaded', function () {
-    const modal = document.getElementById('modal');
+    const modal = document.getElementById('modalProduto');
     const modalBody = modal.querySelector('.modal-body');
 
     modalLimpo = modalBody.innerHTML;

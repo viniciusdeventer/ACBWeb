@@ -8,5 +8,6 @@
         public String? Observacoes { get; set; }
         public int? Status { get; set; }
         public DateTime? DataCadastro { get; set; }
+        public List<Conta>? Contas { get; set; }
     }
 }

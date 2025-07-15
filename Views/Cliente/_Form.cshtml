@@ -38,10 +38,13 @@
             <input name="DataCadastro" class="form-control" type="text" readonly tabindex="-1" onfocus="this.blur()" value="@Model?.DataCadastro" />
         </div>
     </div>
-
-    @* AQUI *@
+    @if (ViewBag.Contas != null)
+    {
+        @await Html.PartialAsync("~/Views/Conta/_Table.cshtml", (List<ACBWeb.Models.Conta>)ViewBag.Contas)
+    }
 
     <div class="d-flex justify-content-end">
         <button type="submit" class="btn btn-primary">Salvar</button>
     </div>
 </form>
+

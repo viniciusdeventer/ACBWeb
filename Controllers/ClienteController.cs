@@ -8,6 +8,7 @@ namespace ACBWeb.Controllers
     public class ClienteController : Controller
     {
         private readonly ClienteDAO clienteDAO = new ClienteDAO();
+        private readonly ContaDAO contaDAO = new ContaDAO();
 
         [Authorize]
         [HttpGet]
@@ -41,11 +42,26 @@ namespace ACBWeb.Controllers
         }
 
         [HttpGet]
-        public IActionResult BuscarPorId(int id)
+        public IActionResult BuscarPorId(int id, int pagina = 1, int tamanhoPagina = 10)
         {
             var cliente = clienteDAO.BuscarPorId(id);
             if (cliente == null)
                 return NotFound();
+
+            var contas = contaDAO.GetContas(id);
+
+            int totalItens = contas.Count;
+            var contasPaginadas = contas
+                .Skip((pagina - 1) * tamanhoPagina)
+                .Take(tamanhoPagina)
+                .ToList();
+
+            ViewBag.Termo = "";
+            ViewBag.PaginaAtual = pagina;
+            ViewBag.TotalItens = totalItens;
+            ViewBag.TamanhoPagina = tamanhoPagina;
+
+            ViewBag.Contas = contasPaginadas;
 
             return PartialView("_Form", cliente);
         }

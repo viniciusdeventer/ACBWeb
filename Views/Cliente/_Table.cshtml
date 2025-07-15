@@ -1,4 +1,5 @@
 ﻿@model List<ACBWeb.Models.Cliente>
+
 <div id="clientes-container">
     <table class='table table-hover mt-3 table-striped'>
         <thead>
@@ -28,5 +29,8 @@
             }
         </tbody>
     </table>
+    @{
+        ViewBag.ModalId = "modalCliente";
+    }
     @await Html.PartialAsync("_Paginacao")
 </div>
