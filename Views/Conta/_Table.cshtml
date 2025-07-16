@@ -5,8 +5,8 @@
         <thead>
             <tr>
                 <th class="text-center">ID</th>
-                <th class="text-center col-">Data de Abertura</th>
-                <th class="text-center col-4">Situação</th>
+                <th class="text-center">Situação</th>
+                <th class="text-center">Data de Cadastro</th>
             </tr>
         </thead>
         <tbody>
@@ -16,12 +16,12 @@
                 {
                     <tr data-id="@conta.IdConta" onclick="abrirModalConta(@conta.IdConta)" style="cursor: pointer;">
                         <td class="text-center align-middle">@conta.IdConta</td>
-                        <td class="text-center align-middle">@conta.DataAbertura?.ToString("dd/MM/yyyy")</td>
                         <td class="text-center align-middle">
                             @(conta.Situacao == 0 ? "Em Aberto" :
                             conta.Situacao == 1 ? "Pago" :
                             conta.Situacao == 2 ? "Pago Parcial" : "")
                         </td>
+                        <td class="text-center align-middle">@conta.DataCadastro?.ToString("dd/MM/yyyy")</td>
                     </tr>
                 }
             }

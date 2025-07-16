@@ -53,3 +53,16 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalContaProdutos" tabindex="-1" aria-labelledby="modalContaProdutosLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                @await Html.PartialAsync("~/Views/ContaProdutos/_Form.cshtml", new ACBWeb.Models.Conta())
+            </div>
+        </div>
+    </div>
+</div>
+

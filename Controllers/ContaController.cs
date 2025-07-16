@@ -9,24 +9,24 @@ namespace ACBWeb.Controllers
     {
         private readonly ContaDAO contaDAO = new ContaDAO();
 
-        [HttpGet]
-        public IActionResult Index(int id)
-        {
-            var contas = contaDAO.GetContas(id);
-            return View(contas);
-        }
+        //[HttpGet]
+        //public IActionResult Index(int id)
+        //{
+        //    var contas = contaDAO.GetContas(id);
+        //    return View(contas);
+        //}
 
         [HttpPost]
         public IActionResult Salvar(Conta conta)
         {
             if (conta.IdConta == null)
             {
-                conta.DataAbertura = DateTime.Now;
+                conta.DataCadastro = DateTime.Now;
                 conta.Situacao ??= 0;
             }
 
             contaDAO.Salvar(conta);
-            return RedirectToAction("BuscarPorId", new { id = conta.IdCliente });
+            return PartialView("_Form", conta);
         }
 
         [HttpGet]

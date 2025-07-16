@@ -1,4 +1,5 @@
 ﻿function abrirModalCliente(idCliente) {
+    idClienteSelecionado = idCliente;
     fetch(`/Cliente/BuscarPorId/${idCliente}`)
         .then(response => response.text())
         .then(html => {
@@ -9,6 +10,7 @@
 }
 
 let modalClienteLimpo;
+let idClienteSelecionado = null;
 
 document.addEventListener('DOMContentLoaded', function () {
     const modal = document.getElementById('modalCliente');

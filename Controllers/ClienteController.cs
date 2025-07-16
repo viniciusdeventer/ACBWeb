@@ -44,6 +44,8 @@ namespace ACBWeb.Controllers
         [HttpGet]
         public IActionResult BuscarPorId(int id, int pagina = 1, int tamanhoPagina = 10)
         {
+            ViewBag.IdCliente = id;
+
             var cliente = clienteDAO.BuscarPorId(id);
             if (cliente == null)
                 return NotFound();

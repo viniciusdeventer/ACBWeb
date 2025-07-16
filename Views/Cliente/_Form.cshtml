@@ -35,13 +35,15 @@
         </div>
         <div class="col-md-3 ms-auto">
             <label for="DataCadastro" class="form-label">Data de Cadastro</label>
-            <input name="DataCadastro" class="form-control" type="text" readonly tabindex="-1" onfocus="this.blur()" value="@Model?.DataCadastro" />
+            <input name="DataCadastro" class="form-control" type="text" disabled tabindex="-1" onfocus="this.blur()" value="@Model?.DataCadastro?.ToString("dd/MM/yyyy")" />
         </div>
     </div>
-    @if (ViewBag.Contas != null)
-    {
-        @await Html.PartialAsync("~/Views/Conta/_Table.cshtml", (List<ACBWeb.Models.Conta>)ViewBag.Contas)
-    }
+        @if (ViewBag.Contas != null)
+        {
+            <div class="border p-2 mb-3" style="padding-bottom: 0 !important;">
+                @await Html.PartialAsync("~/Views/Conta/_Table.cshtml", (List<ACBWeb.Models.Conta>)ViewBag.Contas)
+            </div>
+        }
 
     <div class="d-flex justify-content-end">
         <button type="submit" class="btn btn-primary">Salvar</button>

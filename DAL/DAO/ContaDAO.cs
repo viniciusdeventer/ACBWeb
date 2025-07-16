@@ -18,7 +18,7 @@ namespace ACBWeb.DAL.DAO
 
                 string sql = @"SELECT * FROM Contas 
                                WHERE ID_Cliente = @IdCliente 
-                               ORDER BY Data_Abertura DESC";
+                               ORDER BY Data_Cadastro DESC";
 
                 using (var cmd = new MySqlCommand(sql, conn))
                 {
@@ -30,14 +30,13 @@ namespace ACBWeb.DAL.DAO
                         {
                             lista.Add(new Conta
                             {
-                                IdConta = reader.GetInt32("ID_Conta"),
-                                IdCliente = reader.GetInt32("ID_Cliente"),
-                                DataAbertura = reader.GetDateTime("Data_Abertura"),
-                                Situacao = reader.GetInt32("Situacao"),
+                                IdConta = reader.GetNullableInt("ID_Conta"),
+                                IdCliente = reader.GetNullableInt("ID_Cliente"),
+                                Situacao = reader.GetNullableInt("Situacao"),
                                 DataPagamento = reader.GetNullableDateTime("Data_Pagamento"),
-                                ValorPagamento = reader.GetDecimal("Valor_Pagamento"),
+                                ValorPagamento = reader.GetNullableDecimal("Valor_Pagamento"),
                                 ObservacaoPagamento = reader.GetNullableString("Observacao_Pagamento"),
-                                DataCadastro = reader.GetDateTime("Data_Cadastro")
+                                DataCadastro = reader.GetNullableDateTime("Data_Cadastro")
                             });
                         }
                     }
@@ -55,7 +54,7 @@ namespace ACBWeb.DAL.DAO
 
                 string sql = @"SELECT * FROM Contas 
                                WHERE ID_Cliente = @IdCliente 
-                               AND Situacao = 0 ";
+                               AND Situacao = 0";
 
                 using (var cmd = new MySqlCommand(sql, conn))
                 {
@@ -69,12 +68,11 @@ namespace ACBWeb.DAL.DAO
                             {
                                 IdConta = reader.GetInt32("ID_Conta"),
                                 IdCliente = reader.GetInt32("ID_Cliente"),
-                                DataAbertura = reader.GetDateTime("Data_Abertura"),
                                 Situacao = reader.GetInt32("Situacao"),
                                 DataPagamento = reader.GetNullableDateTime("Data_Pagamento"),
                                 ValorPagamento = reader.GetDecimal("Valor_Pagamento"),
                                 ObservacaoPagamento = reader.GetNullableString("Observacao_Pagamento"),
-                                DataCadastro = reader.GetDateTime("Data_Cadastro")
+                                DataCadastro = reader.GetNullableDateTime("Data_Cadastro")
                             };
                         }
                     }
@@ -90,7 +88,9 @@ namespace ACBWeb.DAL.DAO
             {
                 if (conn == null) return null;
 
-                string sql = "SELECT * FROM Contas WHERE ID_Conta = @IdConta";
+                string sql = @"SELECT * FROM Contas C 
+                             INNER JOIN Clientes Cli ON C.ID_Cliente = Cli.ID_Cliente 
+                             WHERE ID_Conta = @IdConta";
 
                 using (var cmd = new MySqlCommand(sql, conn))
                 {
@@ -102,14 +102,14 @@ namespace ACBWeb.DAL.DAO
                         {
                             return new Conta
                             {
-                                IdConta = reader.GetInt32("ID_Conta"),
-                                IdCliente = reader.GetInt32("ID_Cliente"),
-                                DataAbertura = reader.GetDateTime("Data_Abertura"),
-                                Situacao = reader.GetInt32("Situacao"),
+                                IdConta = reader.GetNullableInt("ID_Conta"),
+                                IdCliente = reader.GetNullableInt("ID_Cliente"),
+                                NomeCliente = reader.GetNullableString("Nome"),
+                                Situacao = reader.GetNullableInt("Situacao"),
                                 DataPagamento = reader.GetNullableDateTime("Data_Pagamento"),
-                                ValorPagamento = reader.GetDecimal("Valor_Pagamento"),
+                                ValorPagamento = reader.GetNullableDecimal("Valor_Pagamento"),
                                 ObservacaoPagamento = reader.GetNullableString("Observacao_Pagamento"),
-                                DataCadastro = reader.GetDateTime("Data_Cadastro")
+                                DataCadastro = reader.GetNullableDateTime("Data_Cadastro")
                             };
                         }
                     }
@@ -139,15 +139,14 @@ namespace ACBWeb.DAL.DAO
                 else
                 {
                     sql = @"INSERT INTO Contas 
-                            (ID_Cliente, Data_Abertura, Situacao, Valor_Pagamento, Data_Pagamento, Observacao_Pagamento) 
+                            (ID_Cliente, Situacao, Valor_Pagamento, Data_Pagamento, Observacao_Pagamento) 
                             VALUES 
-                            (@IdCliente, @DataAbertura, @Situacao, @ValorPagamento, @DataPagamento, @ObservacaoPagamento)";
+                            (@IdCliente, @Situacao, @ValorPagamento, @DataPagamento, @ObservacaoPagamento)";
                 }
 
                 using (var cmd = new MySqlCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("@IdCliente", conta.IdCliente);
-                    cmd.Parameters.AddWithValue("@DataAbertura", conta.DataAbertura);
                     cmd.Parameters.AddWithValue("@Situacao", conta.Situacao);
                     cmd.Parameters.AddWithValue("@ValorPagamento", conta.ValorPagamento);
                     cmd.Parameters.AddWithValue("@DataPagamento", conta.DataPagamento);

@@ -1,19 +1,85 @@
 ﻿@model ACBWeb.Models.Conta
 
-<table class='table table-hover mt-3 table-striped'>
-    <thead>
-        <tr>
-            <th class="text-center">ID</th>
-            <th class="text-center">Quantidade</th>
-            <th class="text-center">Descrição</th>
-            <th class="text-center">Valor Unitário</th>
-            <th class="text-center">Subtotal</th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
-@{
+<form method="POST" id="formConta" action="/Conta/Salvar" enctype="multipart/form-data">
+    <div class="row mb-3">
+        <div class="col-md-1">
+            <label for="IdConta" class="form-label">ID</label>
+            <input name="IdConta" class="form-control" readonly tabindex="-1" onfocus="this.blur()" value="@Model?.IdConta" />
+        </div>
+
+        <div class="col-md-6">
+            <input type="hidden" name="IdCliente" value="IdCliente" />
+            <label for="NomeCliente" class="form-label">Nome</label>
+            <input name="NomeCliente" class="form-control" readonly tabindex="-1" onfocus="this.blur()" value="@Model?.NomeCliente" />
+        </div>
+
+        <div class="col-md-2">
+            <label for="Status" class="form-label">Situação</label>
+            <select name="Status" class="form-select readonly">
+                <option value="0" selected>Em Aberto</option>
+                <option value="1" @(Model?.Situacao == 1 ? "selected" : "")>Pago</option>
+                <option value="2" @(Model?.Situacao == 2 ? "selected" : "")>Pago Parcial</option>
+            </select>
+        </div>
+
+        <div class="col-md-2 ms-auto">
+            <label for="DataCadastro" class="form-label">Data de Cadastro</label>
+            <input name="DataCadastro" class="form-control" type="text" disabled tabindex="-1" onfocus="this.blur()" value="@Model?.DataCadastro?.ToString("dd/MM/yyyy")" />
+        </div>
+    </div>
+
+    @if (ViewBag.ContaProdutos != null)
+    {
+    <table class='table table-hover mt-3 table-striped'>
+        <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">Quantidade</th>
+                <th class="text-center col-5">Descrição</th>
+                <th class="text-center">Valor Unitário</th>
+                <th class="text-center">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-center">10</td>
+                <td class="text-center">2</td>
+                <td class="text-center col-5">Caixa de Massa Corrida 25kg</td>
+                <td class="text-center">R$52,00</td>
+                <td class="text-center">R$104,00</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-end mt-2">
+        <h5 class="titulo fw-bold">Total - R$104,00</h5>
+    </div>
+
     ViewBag.ModalId = "modalContaProdutos";
-}
-@await Html.PartialAsync("_Paginacao")
+    @await Html.PartialAsync("_Paginacao")
+
+    <div class="row mb-3">
+        <div class="col-md-2 d-grid">
+            <label class="form-label invisible">.</label>
+            <button type="button" class="btn btn-primary">
+                <i class="fas fa-dollar-sign me-1"></i> Pagar
+            </button>
+        </div>
+        <div class="col-md-3">
+            <label for="ValorPagamento" class="form-label">Valor Pagamento</label>
+            <input name="ValorPagamento" class="form-control" readonly tabindex="-1" onfocus="this.blur()" value="@Model?.ValorPagamento" />
+        </div>
+        <div class="col-md-5">
+            <label for="ObservacaoPagamento" class="form-label">Observação</label>
+            <input name="ObservacaoPagamento" class="form-control" readonly tabindex="-1" onfocus="this.blur()" value="@Model?.ObservacaoPagamento" />
+        </div>
+        <div class="col-md-2">
+            <label for="DataPagamento" class="form-label">Data de Pagamento</label>
+            <input name="DataPagamento" class="form-control" readonly tabindex="-1" onfocus="this.blur()" value="@Model?.DataPagamento" />
+        </div>
+    </div>
+    }
+
+    <div class="d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </div>
+</form>
