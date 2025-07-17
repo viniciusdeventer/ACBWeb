@@ -33,24 +33,26 @@ document.addEventListener('shown.bs.modal', function (event) {
 
 document.addEventListener('submit', function (e) {
     const form = e.target;
-
     if (form.id === 'formConta') {
         e.preventDefault();
-
         const formData = new FormData(form);
-
-        fetch('/Conta/Salvar', {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => response.text())
-            .then(html => {
+        fetch('/Conta/Salvar', { method: 'POST', body: formData })
+            .then(r => {
+                if (!r.ok) throw new Error('Erro ao salvar');
+                return r.text();
+            })
+            .then(() => {
                 const modalElement = document.getElementById('modalConta');
                 const modal = bootstrap.Modal.getInstance(modalElement);
                 modal.hide();
+                const clienteForm = document.getElementById('formCliente');
+                const idCliente = clienteForm.querySelector('[name="IdCliente"]').value;
+                return fetch(`/Cliente/BuscarPorId?id=${encodeURIComponent(idCliente)}`);
             })
-            .catch(error => {
-                console.error('Erro ao salvar a conta:', error);
-            });
+            .then(r => r.text())
+            .then(html => {
+                document.querySelector('#formCliente').outerHTML = html;
+            })
+            .catch(err => console.error(err));
     }
 });

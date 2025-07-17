@@ -21,6 +21,7 @@ namespace ACBWeb.DAL.DAO
                              " Descricao, " +
                              " Imagem, " +
                              " Valor_Produto, " +
+                             " Estoque, " +
                              " Status, " +
                              " Data_Cadastro FROM Produtos" +
                              " WHERE Status = 1" +
@@ -38,6 +39,7 @@ namespace ACBWeb.DAL.DAO
                             Descricao = reader.GetNullableString("Descricao"),
                             Imagem = reader.GetNullableString("Imagem"),
                             ValorProduto = reader.GetNullableDecimal("Valor_Produto"),
+                            Estoque = reader.GetNullableInt("Estoque"),
                             Status = reader.GetNullableInt("Status"),
                             DataCadastro = reader.GetNullableDateTime("Data_Cadastro")
                         });
@@ -56,7 +58,7 @@ namespace ACBWeb.DAL.DAO
             {
                 if (conn == null) return lista;
 
-                string sql = @"SELECT ID_Produto, Nome, Descricao, Imagem, Valor_Produto, Status, Data_Cadastro
+                string sql = @"SELECT ID_Produto, Nome, Descricao, Imagem, Valor_Produto, Estoque, Status, Data_Cadastro
                                FROM Produtos 
                                WHERE Nome LIKE @Termo AND Status = 1
                                ORDER BY Nome";
@@ -76,6 +78,7 @@ namespace ACBWeb.DAL.DAO
                                 Descricao = reader.GetNullableString("Descricao"),
                                 Imagem = reader.GetNullableString("Imagem"),
                                 ValorProduto = reader.GetNullableDecimal("Valor_Produto"),
+                                Estoque = reader.GetNullableInt("Estoque"),
                                 Status = reader.GetNullableInt("Status"),
                                 DataCadastro = reader.GetNullableDateTime("Data_Cadastro")
                             });
@@ -96,7 +99,8 @@ namespace ACBWeb.DAL.DAO
                                       Nome, 
                                       Descricao, 
                                       Imagem, 
-                                      Valor_Produto, 
+                                      Valor_Produto,
+                                      Estoque,
                                       Status, 
                                       Data_Cadastro
                                FROM Produtos 
@@ -118,6 +122,7 @@ namespace ACBWeb.DAL.DAO
                                 Descricao = reader.GetNullableString("Descricao"),
                                 Imagem = reader.GetNullableString("Imagem"),
                                 ValorProduto = reader.GetNullableDecimal("Valor_Produto"),
+                                Estoque = reader.GetNullableInt("Estoque"),
                                 Status = reader.GetNullableInt("Status"),
                                 DataCadastro = reader.GetNullableDateTime("Data_Cadastro")
                             };
@@ -144,15 +149,16 @@ namespace ACBWeb.DAL.DAO
                         Descricao = @Descricao,
                         Imagem = @Imagem,
                         Valor_Produto = @ValorProduto,
+                        Estoque = @Estoque,
                         Status = @Status
                     WHERE ID_Produto = @IdProduto";
                 }
                 else
                 {
                     sql = @"INSERT INTO Produtos 
-                    (Nome, Descricao, Imagem, Valor_Produto, Status)
+                    (Nome, Descricao, Imagem, Valor_Produto, Estoque, Status)
                     VALUES 
-                    (@Nome, @Descricao, @Imagem, @ValorProduto, @Status)";
+                    (@Nome, @Descricao, @Imagem, @ValorProduto, @Estoque, @Status)";
                 }
 
                 using (var cmd = new MySqlCommand(sql, conn))
@@ -161,6 +167,7 @@ namespace ACBWeb.DAL.DAO
                     cmd.Parameters.AddWithValue("@Descricao", produto.Descricao);
                     cmd.Parameters.AddWithValue("@Imagem", produto.Imagem);
                     cmd.Parameters.AddWithValue("@ValorProduto", produto.ValorProduto);
+                    cmd.Parameters.AddWithValue("@Estoque", produto.Estoque);
                     cmd.Parameters.AddWithValue("@Status", produto.Status);
 
                     if (produto.IdProduto > 0)

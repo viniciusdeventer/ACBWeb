@@ -1,1 +1,40 @@
-﻿@model ACBWeb.Models.Conta
+﻿@model ACBWeb.Models.ContaProdutos
+
+<form method="POST" id="formContaProdutos" action="/ContaProdutos/Salvar" enctype="multipart/form-data">
+    <div class="row mb-3">
+        <div class="col-md-2">
+            <label for="IdItem" class="form-label">ID</label>
+            <input name="IdItem" class="form-control" readonly tabindex="-1" onfocus="this.blur()" value="@Model?.IdItem" />
+        </div>
+
+        <div class="col-md-10">
+            <label for="IdProduto" class="form-label">Produto</label>
+            <select name="IdProduto" id="IdProduto" class="form-select" required style="width: 100%" data-value="@Model?.IdProduto" data-text="@Model?.NomeItem">
+                @if (Model?.IdProduto != null && !string.IsNullOrEmpty(Model?.NomeItem))
+                {
+                    <option value="@Model.IdProduto" selected="selected">@Model.NomeItem</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-2">
+            <label for="Quantidade" class="form-label">Quantidade</label>
+            <input name="Quantidade" type="number" class="form-control" value="@Model?.Quantidade" />
+        </div>
+
+        <div class="col-md-3">
+            <label for="ValorUnitario" class="form-label">Valor Unitário</label>
+            <input name="ValorUnitario" type="number" step="0.01" placeholder="0,00" class="form-control" value="@Model?.ValorUnitario" />
+        </div>
+
+        <div class="col-md-3 ms-auto">
+            <label for="DataCadastro" class="form-label">Data de Cadastro</label>
+            <input name="DataCadastro" class="form-control" type="text" disabled tabindex="-1" onfocus="this.blur()" value="@Model?.DataCadastro?.ToString("dd/MM/yyyy")" />
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </div>
+</form>

@@ -94,6 +94,35 @@ namespace ACBWeb.Controllers
 
             return PartialView("_Lista", produtosPaginados);
         }
+
+        [HttpGet]
+        public IActionResult BuscarProdutosJson(string term)
+        {
+            var produtos = string.IsNullOrEmpty(term)
+                ? produtoDAO.GetProdutos()
+                : produtoDAO.BuscarProduto(term);
+
+            var resultado = produtos.Select(p => new {
+                id = p.IdProduto,
+                text = p.Nome
+            });
+
+            return Json(resultado);
+        }
+
+        [HttpGet]
+        public IActionResult BuscarProdutoJson(int id)
+        {
+            var produto = produtoDAO.BuscarPorId(id);
+            if (produto == null)
+                return Json(new { sucesso = false });
+
+            return Json(new
+            {
+                sucesso = true,
+                valorProduto = produto.ValorProduto
+            });
+        }
     }
 }
 

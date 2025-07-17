@@ -18,7 +18,7 @@ namespace ACBWeb.DAL.DAO
 
                 string sql = @"SELECT * FROM Contas 
                                WHERE ID_Cliente = @IdCliente 
-                               ORDER BY Data_Cadastro DESC";
+                               ORDER BY Data_Cadastro";
 
                 using (var cmd = new MySqlCommand(sql, conn))
                 {
@@ -45,43 +45,6 @@ namespace ACBWeb.DAL.DAO
 
             return lista;
         }
-
-        public Conta BuscarContaAberta(int idCliente)
-        {
-            using (var conn = Conexao.GetConnection())
-            {
-                if (conn == null) return null;
-
-                string sql = @"SELECT * FROM Contas 
-                               WHERE ID_Cliente = @IdCliente 
-                               AND Situacao = 0";
-
-                using (var cmd = new MySqlCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@IdCliente", idCliente);
-
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            return new Conta
-                            {
-                                IdConta = reader.GetInt32("ID_Conta"),
-                                IdCliente = reader.GetInt32("ID_Cliente"),
-                                Situacao = reader.GetInt32("Situacao"),
-                                DataPagamento = reader.GetNullableDateTime("Data_Pagamento"),
-                                ValorPagamento = reader.GetDecimal("Valor_Pagamento"),
-                                ObservacaoPagamento = reader.GetNullableString("Observacao_Pagamento"),
-                                DataCadastro = reader.GetNullableDateTime("Data_Cadastro")
-                            };
-                        }
-                    }
-                }
-            }
-
-            return null;
-        }
-
         public Conta BuscarPorId(int idConta)
         {
             using (var conn = Conexao.GetConnection())

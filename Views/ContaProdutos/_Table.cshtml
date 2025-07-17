@@ -1,0 +1,43 @@
+﻿@model List<ACBWeb.Models.ContaProdutos>
+
+@{
+    decimal total = Model != null && Model.Any() ? Model.First().Total ?? 0 : 0;
+}
+
+<div id="contaProdutos-container">
+    <table class='table table-hover table-striped'>
+        <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">Quantidade</th>
+                <th class="text-center col-5">Descrição</th>
+                <th class="text-center">Valor Unitário</th>
+                <th class="text-center">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var contaProduto in Model)
+                {
+                    <tr data-id="@contaProduto.IdItem" onclick="abrirModalContaProdutos(@contaProduto.IdItem)" style="cursor: pointer;">
+                        <td class="text-center">@contaProduto.IdItem</td>
+                        <td class="text-center">@contaProduto.Quantidade</td>
+                        <td class="text-center col-5">@contaProduto.NomeItem</td>
+                        <td class="text-center">@contaProduto.ValorUnitario</td>
+                        <td class="text-center">@contaProduto.Subtotal</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-end mt-2">
+        <h5 class="titulo fw-bold">Total - R$@total.ToString("F2")</h5>
+    </div>
+
+    @{
+        ViewBag.ModalId = "modalContaProdutos";
+    }
+    @await Html.PartialAsync("_Paginacao")
+</div>

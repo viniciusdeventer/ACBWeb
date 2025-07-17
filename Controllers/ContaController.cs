@@ -8,6 +8,7 @@ namespace ACBWeb.Controllers
     public class ContaController : Controller
     {
         private readonly ContaDAO contaDAO = new ContaDAO();
+        private readonly ContaProdutosDAO contaProdutosDAO = new ContaProdutosDAO();
 
         //[HttpGet]
         //public IActionResult Index(int id)
@@ -30,9 +31,25 @@ namespace ACBWeb.Controllers
         }
 
         [HttpGet]
-        public IActionResult BuscarContaPorId(int id)
+        public IActionResult BuscarContaPorId(int id, int pagina = 1, int tamanhoPagina = 10)
         {
             var conta = contaDAO.BuscarPorId(id);
+
+            var contaProdutos = contaProdutosDAO.GetContaProdutos(id);
+
+            int totalItens = contaProdutos.Count;
+            var contaProdutosPaginados = contaProdutos
+                .Skip((pagina - 1) * tamanhoPagina)
+                .Take(tamanhoPagina)
+                .ToList();
+
+            ViewBag.Termo = "";
+            ViewBag.PaginaAtual = pagina;
+            ViewBag.TotalItens = totalItens;
+            ViewBag.TamanhoPagina = tamanhoPagina;
+
+            ViewBag.ContaProdutos = contaProdutosPaginados;
+
             return PartialView("_Form", conta);
         }
     }

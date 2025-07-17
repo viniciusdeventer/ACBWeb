@@ -14,8 +14,8 @@
         </div>
 
         <div class="col-md-2">
-            <label for="Status" class="form-label">Situação</label>
-            <select name="Status" class="form-select readonly">
+            <label for="Situacao" class="form-label">Situação</label>
+            <select name="Situacao" class="form-select readonly">
                 <option value="0" selected>Em Aberto</option>
                 <option value="1" @(Model?.Situacao == 1 ? "selected" : "")>Pago</option>
                 <option value="2" @(Model?.Situacao == 2 ? "selected" : "")>Pago Parcial</option>
@@ -30,33 +30,10 @@
 
     @if (ViewBag.ContaProdutos != null)
     {
-    <table class='table table-hover mt-3 table-striped'>
-        <thead>
-            <tr>
-                <th class="text-center">ID</th>
-                <th class="text-center">Quantidade</th>
-                <th class="text-center col-5">Descrição</th>
-                <th class="text-center">Valor Unitário</th>
-                <th class="text-center">Subtotal</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td class="text-center">10</td>
-                <td class="text-center">2</td>
-                <td class="text-center col-5">Caixa de Massa Corrida 25kg</td>
-                <td class="text-center">R$52,00</td>
-                <td class="text-center">R$104,00</td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="d-flex justify-content-end mt-2">
-        <h5 class="titulo fw-bold">Total - R$104,00</h5>
-    </div>
-
-    ViewBag.ModalId = "modalContaProdutos";
-    @await Html.PartialAsync("_Paginacao")
-
+        <div class="border p-2 mb-3" style="padding-bottom: 0 !important;">
+            @await Html.PartialAsync("~/Views/ContaProdutos/_Table.cshtml", (List<ACBWeb.Models.ContaProdutos>)ViewBag.ContaProdutos)
+        </div>
+    }
     <div class="row mb-3">
         <div class="col-md-2 d-grid">
             <label class="form-label invisible">.</label>
@@ -77,7 +54,6 @@
             <input name="DataPagamento" class="form-control" readonly tabindex="-1" onfocus="this.blur()" value="@Model?.DataPagamento" />
         </div>
     </div>
-    }
 
     <div class="d-flex justify-content-end">
         <button type="submit" class="btn btn-primary">Salvar</button>
