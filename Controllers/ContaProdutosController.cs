@@ -21,8 +21,19 @@ namespace ACBWeb.Controllers
                     contaProduto.NomeItem = produto.Nome;
                 }
             }
-
             return PartialView("_Form", contaProduto);
+        }
+
+        [HttpPost]
+        public IActionResult Salvar(ContaProdutos contaProdutos)
+        {
+            string valorStr = Request.Form["ValorUnitario"];
+            valorStr = valorStr.Replace(".", "").Replace(",", ".");
+            decimal valor = decimal.Parse(valorStr, System.Globalization.CultureInfo.InvariantCulture);
+            contaProdutos.ValorUnitario = valor;
+
+            contaProdutosDAO.Salvar(contaProdutos);
+            return PartialView("_Form", contaProdutos);
         }
     }
 }

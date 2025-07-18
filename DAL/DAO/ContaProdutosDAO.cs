@@ -125,18 +125,17 @@ namespace ACBWeb.DAL.DAO
 
                 if (contaProdutos.IdItem > 0)
                 {
-                    sql = @"UPDATE ContaProdutos 
+                    sql = @"UPDATE Contas_Produtos 
                             SET Quantidade = @Quantidade,
                                 Valor_Unitario = @ValorUnitario,
-                                Tipo_Item = @TipoItem,
                             WHERE ID_Item = @IdItem";
                 }
                 else
                 {
-                    sql = @"INSERT INTO ContaProdutos 
-                            (ID_Conta, ID_Produto, Quantidade, Valor_Unitario, Tipo_Item) 
+                    sql = @"INSERT INTO Contas_Produtos 
+                            (ID_Conta, ID_Produto, Quantidade, Valor_Unitario) 
                             VALUES 
-                            (@IdConta, @IdProduto, @Quantidade, @ValorUnitario, @TipoItem)";
+                            (@IdConta, @IdProduto, @Quantidade, @ValorUnitario)";
                 }
 
                 using (var cmd = new MySqlCommand(sql, conn))
@@ -145,7 +144,6 @@ namespace ACBWeb.DAL.DAO
                     cmd.Parameters.AddWithValue("@IdProduto", contaProdutos.IdProduto);
                     cmd.Parameters.AddWithValue("@Quantidade", contaProdutos.Quantidade);
                     cmd.Parameters.AddWithValue("@ValorUnitario", contaProdutos.ValorUnitario);
-                    cmd.Parameters.AddWithValue("@TipoItem", contaProdutos.TipoItem);
 
                     if (contaProdutos.IdItem > 0)
                         cmd.Parameters.AddWithValue("@IdItem", contaProdutos.IdItem);

@@ -30,7 +30,7 @@
 
     @if (ViewBag.ContaProdutos != null)
     {
-        <div class="border p-2 mb-3" style="padding-bottom: 0 !important;">
+        <div style="padding-bottom: 0 !important;">
             @await Html.PartialAsync("~/Views/ContaProdutos/_Table.cshtml", (List<ACBWeb.Models.ContaProdutos>)ViewBag.ContaProdutos)
         </div>
     }

@@ -1,105 +1,169 @@
-﻿function abrirModalContaProdutos(idItem) {
+﻿const modalContaProdutosEl = document.getElementById('modalContaProdutos');
+
+modalContaProdutosEl.addEventListener('shown.bs.modal', () => {
+    const $select = $('#IdProduto');
+
+    if ($select.length === 0) return;
+
+    if ($select.hasClass('select2-hidden-accessible')) {
+        $select.select2('destroy');
+    }
+
+    $select.select2({
+        dropdownParent: $('#modalContaProdutos .modal-content'),
+        placeholder: 'Selecione um produto',
+        allowClear: true,
+        language: {
+            noResults: () => "Nenhum produto encontrado...",
+            inputTooShort: (args) => `Digite o que gostaria de pesquisar...`,
+            searching: () => "Buscando...",
+            loadingMore: () => "Carregando mais resultados...",
+            errorLoading: () => "Erro ao carregar resultados..."
+        },
+        ajax: {
+            url: '/Produto/BuscarProdutosJson',
+            dataType: 'json',
+            delay: 250,
+            data: (params) => ({ term: params.term }),
+            processResults: (data) => {
+                console.log('Dados recebidos do servidor:', data);
+                return { results: data };
+            },
+            cache: true
+        },
+        minimumInputLength: 1
+    });
+
+    $select.on('select2:select', function (e) {
+        const idProduto = e.params.data.id;
+        fetch(`/Produto/BuscarProdutoJson?id=${idProduto}`)
+            .then(resp => resp.json())
+            .then(data => {
+                if (data.sucesso) {
+                    const valorStr = data.valorProduto.toFixed(2).replace('.', ',');
+                    const inputValor = document.querySelector('input[name="ValorUnitario"]');
+                    if (inputValor) {
+                        inputValor.value = valorStr;
+                    }
+                }
+            })
+            .catch(console.error);
+    });
+});
+function abrirModalContaProdutos(idItem) {
     fetch(`/ContaProdutos/BuscarContaProdutosPorId/${idItem}`)
         .then(response => response.text())
         .then(html => {
-            document.querySelector('#modalContaProdutos .modal-body').innerHTML = html;
-            var modal = new bootstrap.Modal(document.getElementById('modalContaProdutos'));
+            const modalEl = document.getElementById('modalContaProdutos');
+            const modalBody = modalEl.querySelector('.modal-body');
+            modalBody.innerHTML = html;
+
+            const modal = new bootstrap.Modal(modalEl);
             modal.show();
 
-            // 🔧 Inicializa Select2 após inserir o HTML
-            $('#IdProduto').select2({
+            const $select = $('#IdProduto');
+
+            if ($select.hasClass('select2-hidden-accessible')) {
+                $select.select2('destroy');
+            }
+
+            $select.select2({
+                dropdownParent: $('#modalContaProdutos .modal-content'),
                 placeholder: 'Selecione um produto',
                 allowClear: true,
+                language: {
+                    noResults: () => "Nenhum produto encontrado",
+                    inputTooShort: (args) => `Digite ao menos ${args.minimum} caractere(s)`,
+                    searching: () => "Buscando...",
+                    loadingMore: () => "Carregando mais resultados...",
+                    errorLoading: () => "Erro ao carregar resultados"
+                },
                 ajax: {
                     url: '/Produto/BuscarProdutosJson',
                     dataType: 'json',
                     delay: 250,
-                    data: function (params) {
-                        return { term: params.term };
-                    },
-                    processResults: function (data) {
-                        return { results: data };
-                    },
+                    data: (params) => ({ term: params.term }),
+                    processResults: (data) => ({
+                        results: data.map(item => ({
+                            id: item.idProduto,
+                            text: item.nome
+                        }))
+                    }),
                     cache: true
                 },
                 minimumInputLength: 1
             });
 
-            // 🔧 Reaplica valor se estiver editando
-            const valorSelecionado = $('#IdProduto').data('value');
-            const textoSelecionado = $('#IdProduto').data('text');
+            const valorSelecionado = $select.data('value');
+            const textoSelecionado = $select.data('text');
 
             if (valorSelecionado && textoSelecionado) {
                 const option = new Option(textoSelecionado, valorSelecionado, true, true);
-                $('#IdProduto').append(option).trigger('change');
+                $select.append(option).trigger('change');
             }
         });
 }
 
 let modalContaProdutosLimpo;
 
-document.addEventListener('DOMContentLoaded', function () {
-    const modal = document.getElementById('modalContaProdutos');
-    if (!modal) return;
+document.addEventListener('DOMContentLoaded', () => {
+    const modalEl = document.getElementById('modalContaProdutos');
+    if (!modalEl) return;
 
-    const modalBody = modal.querySelector('.modal-body');
+    const modalBody = modalEl.querySelector('.modal-body');
     modalContaProdutosLimpo = modalBody.innerHTML;
 
-    modal.addEventListener('hidden.bs.modal', function () {
+    modalEl.addEventListener('hidden.bs.modal', () => {
         modalBody.innerHTML = modalContaProdutosLimpo;
     });
 });
 
-document.addEventListener('submit', function (e) {
+document.addEventListener('submit', (e) => {
     const form = e.target;
     if (form.id === 'formContaProdutos') {
         e.preventDefault();
+
         const formData = new FormData(form);
-        fetch('/ContaProdutos/Salvar', { method: 'POST', body: formData })
-            .then(r => {
-                if (!r.ok) throw new Error('Erro ao salvar');
-                return r.text();
+        fetch('/ContaProdutos/Salvar', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) throw new Error('Erro ao salvar');
+                return response.text();
             })
             .then(() => {
-                const modalElement = document.getElementById('modalContaProdutos');
-                const modal = bootstrap.Modal.getInstance(modalElement);
+                const modalEl = document.getElementById('modalContaProdutos');
+                const modal = bootstrap.Modal.getInstance(modalEl);
                 modal.hide();
+
                 const contaForm = document.getElementById('formConta');
                 const idConta = contaForm.querySelector('[name="IdConta"]').value;
+
                 return fetch(`/Conta/BuscarContaPorId?id=${encodeURIComponent(idConta)}`);
             })
-            .then(r => r.text())
+            .then(response => response.text())
             .then(html => {
                 document.querySelector('#formConta').outerHTML = html;
             })
-            .catch(err => console.error(err));
+            .catch(console.error);
     }
 });
 
-$('#IdProduto').select2({
-    placeholder: 'Selecione um produto',
-    allowClear: true,
-    ajax: {
-        url: '/Produto/BuscarProdutosJson',
-        dataType: 'json',
-        delay: 250,
-        data: function (params) {
-            return { term: params.term };
-        },
-        processResults: function (data) {
-            return { results: data };
-        },
-        cache: true
-    },
-    minimumInputLength: 1
+document.addEventListener('DOMContentLoaded', function () {
+    var input = document.getElementById('ValorUnitario');
+    if (input) {
+        input.addEventListener('input', function (e) {
+            let v = e.target.value.replace(/\D/g, '');
+            v = (parseInt(v, 10) / 100).toFixed(2) + '';
+            v = v.replace('.', ',');
+            v = v.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+            e.target.value = v;
+        });
+    }
 });
 
-// Reaplicar opção selecionada (caso edição)
-var valorSelecionado = $('#IdProduto').data('value');
-var textoSelecionado = $('#IdProduto').data('text');
-
-if (valorSelecionado && textoSelecionado) {
-    var option = new Option(textoSelecionado, valorSelecionado, true, true);
-    $('#IdProduto').append(option).trigger('change');
+function parseValorProduto(valorStr) {
+    valorStr = valorStr.replace(".", "").replace(",", ".");
+    return parseFloat(valorStr);
 }
-

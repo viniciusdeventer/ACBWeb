@@ -216,3 +216,41 @@ input[readonly] {
 .modal-body {
     padding-top: 0;
 }
+
+.form-control:focus {
+    border-bottom: 2px solid #223870 !important;
+}
+
+.modal .select2-container {
+    z-index: 1056 !important;
+}
+
+.modal .select2-dropdown {
+    z-index: 1057 !important;
+}
+
+.modal .select2-search__field {
+    z-index: 1058 !important;
+    position: relative;
+}
+
+.select2-container--default .select2-selection--single {
+    height: 38px; 
+    padding: 6px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem; 
+    background-color: #fff;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    font-size: 1rem;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 38px;
+    right: 10px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 24px;
+    padding-left: 0;
+    color: #212529;
+}
