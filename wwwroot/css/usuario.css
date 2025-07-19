@@ -10,14 +10,6 @@
     background: #fff;
 }
 
-.form-control {
-    border: none;
-    border-bottom: 2px solid #ccc;
-    border-radius: 0;
-    box-shadow: none;
-    transition: border-color 0.3s ease;
-}
-
 .input-icon {
     position: absolute;
     left: 10px;

@@ -15,7 +15,7 @@
 
         <div class="col-md-2">
             <label for="Situacao" class="form-label">Situação</label>
-            <select name="Situacao" class="form-select readonly">
+            <select name="Situacao" id="Situacao" class="form-select readonly">
                 <option value="0" selected>Em Aberto</option>
                 <option value="1" @(Model?.Situacao == 1 ? "selected" : "")>Pago</option>
                 <option value="2" @(Model?.Situacao == 2 ? "selected" : "")>Pago Parcial</option>
@@ -33,29 +33,46 @@
         <div style="padding-bottom: 0 !important;">
             @await Html.PartialAsync("~/Views/ContaProdutos/_Table.cshtml", (List<ACBWeb.Models.ContaProdutos>)ViewBag.ContaProdutos)
         </div>
-    }
+
     <div class="row mb-3">
         <div class="col-md-2 d-grid">
             <label class="form-label invisible">.</label>
-            <button type="button" class="btn btn-primary">
+            <button type="button" class="btn btn-primary" onclick="habilitarCampos()">
                 <i class="fas fa-dollar-sign me-1"></i> Pagar
             </button>
         </div>
         <div class="col-md-3">
             <label for="ValorPagamento" class="form-label">Valor Pagamento</label>
-            <input name="ValorPagamento" class="form-control" readonly tabindex="-1" onfocus="this.blur()" value="@Model?.ValorPagamento" />
+            <input name="ValorPagamento" id="ValorPagamento" class="form-control" placeholder="0,00" readonly tabindex="-1" onfocus="this.blur()" value="@Model?.ValorPagamento" />
         </div>
         <div class="col-md-5">
             <label for="ObservacaoPagamento" class="form-label">Observação</label>
-            <input name="ObservacaoPagamento" class="form-control" readonly tabindex="-1" onfocus="this.blur()" value="@Model?.ObservacaoPagamento" />
+            <input name="ObservacaoPagamento" id="ObservacaoPagamento" class="form-control" readonly tabindex="-1" onfocus="this.blur()" value="@Model?.ObservacaoPagamento" />
         </div>
         <div class="col-md-2">
             <label for="DataPagamento" class="form-label">Data de Pagamento</label>
-            <input name="DataPagamento" class="form-control" readonly tabindex="-1" onfocus="this.blur()" value="@Model?.DataPagamento" />
+            <input type="date" name="DataPagamento" id="DataPagamento" class="form-control" readonly tabindex="-1" onfocus="this.blur()" value="@Model?.DataPagamento?.ToString("yyyy-MM-dd")"/>
         </div>
     </div>
+    }
 
     <div class="d-flex justify-content-end">
         <button type="submit" class="btn btn-primary">Salvar</button>
     </div>
 </form>
+
+<div class="modal fade" id="confirmPagamentoModal" tabindex="-1" aria-labelledby="modalContaConfirmLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body" style="padding-bottom: 0;">
+                Deseja realmente confirmar o pagamento desta conta?
+            </div>
+            <div class="d-flex justify-content-end p-3">
+                <button type="button" class="btn btn-primary" id="btnConfirmarPagamento">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>

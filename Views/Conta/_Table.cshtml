@@ -23,7 +23,9 @@
                             conta.Situacao == 2 ? "Pago Parcial" : "")
                         </td>
                         <td class="text-center align-middle">@conta.DataCadastro?.ToString("dd/MM/yyyy")</td>
-                        <td class="text-center align-middle">-</td>
+                        <td class="text-center align-middle">
+                            @(conta.ValorTotal != null ? $"R$ {conta.ValorTotal:N2}" : "-")
+                        </td>
 
                     </tr>
                 }

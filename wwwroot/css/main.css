@@ -112,6 +112,11 @@ header img {
 
 .form-control:focus {
     box-shadow: none;
+    outline: none;
+}
+
+.form-select:focus {
+    box-shadow: none;
     border-color: #ced4da;
     outline: none;
 }
@@ -218,7 +223,8 @@ input[readonly] {
 }
 
 .form-control:focus {
-    border-bottom: 2px solid #223870 !important;
+    border: 1px solid #223870  !important;
+    border-bottom: 3px solid #223870 !important;
 }
 
 .modal .select2-container {

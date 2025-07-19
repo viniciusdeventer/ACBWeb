@@ -16,9 +16,14 @@ namespace ACBWeb.DAL.DAO
             {
                 if (conn == null) return lista;
 
-                string sql = @"SELECT * FROM Contas 
+                string sql = @"SELECT C.*, 
+                               SUM(CP.Quantidade * CP.Valor_Unitario) AS Valor_Total                               
+                               FROM Contas C
+                               LEFT JOIN Contas_Produtos CP ON C.ID_Conta = CP.ID_Conta 
                                WHERE ID_Cliente = @IdCliente 
-                               ORDER BY Data_Cadastro";
+                               AND C.Situacao = 0
+                               GROUP BY C.ID_Conta, C.ID_Cliente
+                               ORDER BY C.Data_Cadastro";
 
                 using (var cmd = new MySqlCommand(sql, conn))
                 {
@@ -36,6 +41,7 @@ namespace ACBWeb.DAL.DAO
                                 DataPagamento = reader.GetNullableDateTime("Data_Pagamento"),
                                 ValorPagamento = reader.GetNullableDecimal("Valor_Pagamento"),
                                 ObservacaoPagamento = reader.GetNullableString("Observacao_Pagamento"),
+                                ValorTotal = reader.GetNullableDecimal("Valor_Total"),
                                 DataCadastro = reader.GetNullableDateTime("Data_Cadastro")
                             });
                         }
@@ -117,6 +123,26 @@ namespace ACBWeb.DAL.DAO
 
                     if (conta.IdConta > 0)
                         cmd.Parameters.AddWithValue("@IdConta", conta.IdConta);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        public void PagarConta(Conta conta)
+        {
+            using (var conn = Conexao.GetConnection())
+            {
+                if (conn == null) return;
+
+                using (var cmd = new MySqlCommand("PagarConta", conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@p_IdConta", conta.IdConta);
+                    cmd.Parameters.AddWithValue("@p_IdCliente", conta.IdCliente);
+                    cmd.Parameters.AddWithValue("@p_ValorPagamento", conta.ValorPagamento);
+                    cmd.Parameters.AddWithValue("@p_DataPagamento", conta.DataPagamento);
+                    cmd.Parameters.AddWithValue("@p_ObservacaoPagamento", conta.ObservacaoPagamento);
 
                     cmd.ExecuteNonQuery();
                 }

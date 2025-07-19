@@ -10,23 +10,18 @@ namespace ACBWeb.Controllers
         private readonly ContaDAO contaDAO = new ContaDAO();
         private readonly ContaProdutosDAO contaProdutosDAO = new ContaProdutosDAO();
 
-        //[HttpGet]
-        //public IActionResult Index(int id)
-        //{
-        //    var contas = contaDAO.GetContas(id);
-        //    return View(contas);
-        //}
-
         [HttpPost]
         public IActionResult Salvar(Conta conta)
         {
-            if (conta.IdConta == null)
+            if (conta.Situacao == 1 && conta.IdConta > 0)
             {
-                conta.DataCadastro = DateTime.Now;
-                conta.Situacao ??= 0;
+                contaDAO.PagarConta(conta); 
+            }
+            else
+            {
+                contaDAO.Salvar(conta);
             }
 
-            contaDAO.Salvar(conta);
             return PartialView("_Form", conta);
         }
 

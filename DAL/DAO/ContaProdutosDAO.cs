@@ -126,8 +126,9 @@ namespace ACBWeb.DAL.DAO
                 if (contaProdutos.IdItem > 0)
                 {
                     sql = @"UPDATE Contas_Produtos 
-                            SET Quantidade = @Quantidade,
-                                Valor_Unitario = @ValorUnitario,
+                            SET ID_Produto = @IdProduto,
+                                Quantidade = @Quantidade,
+                                Valor_Unitario = @ValorUnitario
                             WHERE ID_Item = @IdItem";
                 }
                 else

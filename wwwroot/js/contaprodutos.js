@@ -26,7 +26,6 @@ modalContaProdutosEl.addEventListener('shown.bs.modal', () => {
             delay: 250,
             data: (params) => ({ term: params.term }),
             processResults: (data) => {
-                console.log('Dados recebidos do servidor:', data);
                 return { results: data };
             },
             cache: true
@@ -105,6 +104,15 @@ function abrirModalContaProdutos(idItem) {
 }
 
 let modalContaProdutosLimpo;
+
+document.addEventListener('shown.bs.modal', function (event) {
+    const modal = event.target;
+
+    if (modal.id === 'modalContaProdutos' && idContaSelecionado) {
+        const inputId = modal.querySelector('input[name="IdConta"]');
+        if (inputId) inputId.value = idContaSelecionado;
+    }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
     const modalEl = document.getElementById('modalContaProdutos');

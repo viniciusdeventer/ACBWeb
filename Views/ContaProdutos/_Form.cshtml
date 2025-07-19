@@ -3,6 +3,7 @@
 <form method="POST" id="formContaProdutos" action="/ContaProdutos/Salvar" enctype="multipart/form-data">
     <div class="row mb-3">
         <div class="col-md-2">
+            <input type="hidden" name="IdConta" value="IdConta" />
             <label for="IdItem" class="form-label">ID</label>
             <input name="IdItem" class="form-control" readonly tabindex="-1" onfocus="this.blur()" value="@Model?.IdItem" />
         </div>
