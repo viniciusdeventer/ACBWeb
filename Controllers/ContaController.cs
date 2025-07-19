@@ -47,6 +47,14 @@ namespace ACBWeb.Controllers
 
             return PartialView("_Form", conta);
         }
+
+        [HttpPost]
+        public IActionResult Excluir(int id)
+        {
+
+            contaDAO.Excluir(id);
+            return PartialView("_Form");
+        }
     }
 }
 

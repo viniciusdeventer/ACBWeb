@@ -19,7 +19,7 @@
                         <td class="text-center align-middle">@cliente.IdCliente</td>
                         <td class="text-center align-middle">@cliente.Nome</td>
                         <td class="text-center align-middle">@cliente.Observacoes</td>
-                        <td class="text-center align-middle">
+                        <td class="text-center align-middle fw-bold @(cliente.Status == 2 ? "text-danger" : "text-primary")">
                             @(cliente.Status == 0 ? "Inativo" :
                               cliente.Status == 1 ? "Ativo" :
                               cliente.Status == 2 ? "Bloqueado" : "")

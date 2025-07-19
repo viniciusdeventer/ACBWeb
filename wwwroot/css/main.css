@@ -260,3 +260,20 @@ input[readonly] {
     padding-left: 0;
     color: #212529;
 }
+
+.select2-container--disabled .select2-selection {
+    background-color: #e9ecef !important;
+}
+
+.text-primary {
+    color: #223870 !important;
+}
+
+.text-warning {
+    color: #E38C00 !important;
+}
+
+#calendar {
+    width: 1000px;
+    margin: 40px auto;
+}

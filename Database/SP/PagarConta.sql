@@ -26,9 +26,20 @@ BEGIN
     INTO v_TotalProdutos
     FROM Contas_Produtos CP
     WHERE CP.ID_Conta = p_IdConta;
+    
+	UPDATE Contas
+    SET Situacao = 1,
+        Valor_Pagamento = p_ValorPagamento,
+        Data_Pagamento = p_DataPagamento,
+        Observacao_Pagamento = p_ObservacaoPagamento
+    WHERE ID_Conta = p_IdConta;
 
     IF v_TotalProdutos > p_ValorPagamento THEN
         SET v_Diferenca = v_TotalProdutos - p_ValorPagamento;
+        
+		UPDATE Contas
+		SET Situacao = 2 -- Pago Parcialmente
+		WHERE ID_Conta = p_IdConta;
 
         INSERT INTO Contas (ID_Cliente, Situacao)
         VALUES (p_IdCliente, 0);
@@ -37,14 +48,8 @@ BEGIN
 
         INSERT INTO Contas_Produtos (ID_Conta, Quantidade, Valor_Unitario, Tipo_Item)
         VALUES (v_IdNovaConta, 1, v_Diferenca, 1);
+        
     END IF;
-
-    UPDATE Contas
-    SET Situacao = 1,
-        Valor_Pagamento = p_ValorPagamento,
-        Data_Pagamento = p_DataPagamento,
-        Observacao_Pagamento = p_ObservacaoPagamento
-    WHERE ID_Conta = p_IdConta;
 
     INSERT INTO Vendas (ID_Item, Data_Venda, Quantidade, Valor_Venda, Tipo_Venda)
     VALUES (p_IdConta, p_DataPagamento, 1, p_ValorPagamento, 2);

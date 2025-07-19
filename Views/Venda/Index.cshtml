@@ -1,0 +1,43 @@
+﻿@model List<ACBWeb.Models.Venda>
+
+@section Scripts {
+    <script src="~/js/venda.js" asp-append-version="true"></script>
+}
+
+@{
+    ViewBag.Title = "Vendas";
+}
+
+@await Html.PartialAsync("_Sidebar")
+@await Html.PartialAsync("_Navbar")
+
+<main class="conteudo">
+    <div class="hero">
+        <div class="container py-4">
+            <div class="d-flex align-items-center">
+                <div>
+                    <h4 class="text-primary fw-bold">Caixa Diário</h4>
+                    <h5 class="text-warning fw-bold">19 de Julho de 2025</h5>
+                </div>
+                <span class="ms-auto"><img src="~/assets/images/logo.png" style="width: 115px;"></span>
+            </div>
+            @await Html.PartialAsync("_Table", Model)
+        </div>
+        <div id="calendar"></div>
+    </div>
+</main>
+
+<div class="modal fade" id="modalVenda" tabindex="-1" aria-labelledby="modalVendaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                @await Html.PartialAsync("_Form", new ACBWeb.Models.Venda())
+            </div>
+        </div>
+    </div>
+</div>
+
+

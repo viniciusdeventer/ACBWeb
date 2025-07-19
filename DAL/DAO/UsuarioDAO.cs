@@ -45,7 +45,6 @@ namespace ACBWeb.DAL.DAO
             }
             return null;
         }
-
         private static string GerarHash(string senha)
         {
             using (SHA256 sha = SHA256.Create())

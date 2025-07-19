@@ -10,7 +10,7 @@
 
         <div class="col-md-10">
             <label for="IdProduto" class="form-label">Produto</label>
-            <select name="IdProduto" id="IdProduto" class="form-select" required style="width: 100%" data-value="@Model?.IdProduto" data-text="@Model?.NomeItem">
+            <select name="IdProduto" id="IdProduto" class="form-select" required style="width: 100%" data-value="@Model?.IdProduto" data-text="@Model?.NomeItem" @(Model?.TipoItem == 1 ? "disabled" : "")>
                 @if (Model?.IdProduto != null && !string.IsNullOrEmpty(Model?.NomeItem))
                 {
                     <option value="@Model.IdProduto" selected="selected">@Model.NomeItem</option>
@@ -34,8 +34,8 @@
             <input name="DataCadastro" class="form-control" type="text" disabled tabindex="-1" onfocus="this.blur()" value="@Model?.DataCadastro?.ToString("dd/MM/yyyy")" />
         </div>
     </div>
-
-    <div class="d-flex justify-content-end">
-        <button type="submit" class="btn btn-primary">Salvar</button>
+    <div class="d-flex">
+        <button type="button" class="btn btn-danger" onclick="excluirContaProduto(@Model?.IdItem)" @(Model?.IdItem != null ? "" : "disabled")>Excluir</button>
+        <button type="submit" class="btn btn-primary ms-auto">Salvar</button>
     </div>
 </form>

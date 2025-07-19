@@ -153,5 +153,23 @@ namespace ACBWeb.DAL.DAO
                 }
             }
         }
+
+        public ContaProdutos Excluir(int idItem)
+        {
+            using (var conn = Conexao.GetConnection())
+            {
+                if (conn == null) return null;
+
+                string sql = @"DELETE FROM Contas_Produtos WHERE ID_Item = @ID_Item";
+
+                using (var cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ID_Item", idItem);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            return null;
+        }
     }
 }

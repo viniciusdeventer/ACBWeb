@@ -175,3 +175,27 @@ function parseValorProduto(valorStr) {
     valorStr = valorStr.replace(".", "").replace(",", ".");
     return parseFloat(valorStr);
 }
+
+function excluirContaProduto(idItem) {
+    fetch(`/ContaProdutos/Excluir/${idItem}`, {
+        method: 'POST'
+    })
+        .then(response => {
+            if (!response.ok) throw new Error("Erro ao excluir");
+            return response.text();
+        })
+        .then(html => {
+            const modalEl = document.getElementById('modalContaProdutos');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+
+            const contaForm = document.getElementById('formConta');
+            const idConta = contaForm.querySelector('[name="IdConta"]').value;
+            return fetch(`/Conta/BuscarContaPorId?id=${encodeURIComponent(idConta)}`);
+        })
+        .then(response => response.text())
+        .then(html => {
+            document.querySelector('#formConta').outerHTML = html;
+        })
+        .catch(console.error);
+}

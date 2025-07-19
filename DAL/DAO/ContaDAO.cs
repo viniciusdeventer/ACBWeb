@@ -21,7 +21,7 @@ namespace ACBWeb.DAL.DAO
                                FROM Contas C
                                LEFT JOIN Contas_Produtos CP ON C.ID_Conta = CP.ID_Conta 
                                WHERE ID_Cliente = @IdCliente 
-                               AND C.Situacao = 0
+                               AND C.Situacao IN (0, 2)
                                GROUP BY C.ID_Conta, C.ID_Cliente
                                ORDER BY C.Data_Cadastro";
 
@@ -147,6 +147,24 @@ namespace ACBWeb.DAL.DAO
                     cmd.ExecuteNonQuery();
                 }
             }
+        }
+
+        public Conta Excluir(int idConta)
+        {
+            using (var conn = Conexao.GetConnection())
+            {
+                if (conn == null) return null;
+
+                string sql = @"UPDATE Contas SET Situacao = 2 WHERE ID_Conta = @ID_Conta";
+
+                using (var cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ID_Conta", idConta);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            return null;
         }
     }
 }

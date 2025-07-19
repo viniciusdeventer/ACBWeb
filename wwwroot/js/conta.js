@@ -176,3 +176,26 @@ function parseValorProduto(valorStr) {
     valorStr = valorStr.replace(".", "").replace(",", ".");
     return parseFloat(valorStr);
 }
+function excluirConta(idConta) {
+    fetch(`/Conta/Excluir/${idConta}`, {
+        method: 'POST'
+    })
+        .then(response => {
+            if (!response.ok) throw new Error("Erro ao excluir");
+            return response.text();
+        })
+        .then(() => {
+            const modalEl = document.getElementById('modalConta');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+
+            const contaForm = document.getElementById('formCliente');
+            const idCliente = contaForm.querySelector('[name="IdCliente"]').value;
+            return fetch(`/Cliente/BuscarPorId?id=${encodeURIComponent(idCliente)}`);
+        })
+        .then(response => response.text())
+        .then(html => {
+            document.querySelector('#formCliente').outerHTML = html;
+        })
+        .catch(console.error);
+}

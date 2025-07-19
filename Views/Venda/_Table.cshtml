@@ -1,0 +1,34 @@
+﻿@model List<ACBWeb.Models.Venda>
+
+<div id="vendas-container">
+    <table class='table table-hover mt-3 table-striped'>
+        <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center col-">Quantidade</th>
+                <th class="text-center col-4">Produto</th>
+                <th class="text-center col-2">Valor Unitário</th>
+                <th class="text-center col-2">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var venda in Model)
+                {
+                    <tr data-id="@venda.IdVenda" onclick="abrirModalVenda(@venda.IdVenda)" style="cursor: pointer;">
+                        <td class="text-center align-middle">@venda.IdVenda</td>
+                        <td class="text-center align-middle">@venda.Quantidade</td>
+                        <td class="text-center align-middle">@venda.NomeItem</td>
+                        <td class="text-center align-middle">@venda.ValorVenda</td>
+                        <td class="text-center align-middle">@venda.ValorVenda</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    @{
+        ViewBag.ModalId = "modalVendas";
+    }
+    @await Html.PartialAsync("_Paginacao")
+</div>

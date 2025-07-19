@@ -20,7 +20,7 @@
                         <td class="text-center align-middle">
                             @(conta.Situacao == 0 ? "Em Aberto" :
                             conta.Situacao == 1 ? "Pago" :
-                            conta.Situacao == 2 ? "Pago Parcial" : "")
+                            conta.Situacao == 2 ? "Pago Parcialmente" : "")
                         </td>
                         <td class="text-center align-middle">@conta.DataCadastro?.ToString("dd/MM/yyyy")</td>
                         <td class="text-center align-middle">

@@ -35,5 +35,13 @@ namespace ACBWeb.Controllers
             contaProdutosDAO.Salvar(contaProdutos);
             return PartialView("_Form", contaProdutos);
         }
+
+        [HttpPost]
+        public IActionResult Excluir(int id)
+        {
+
+            contaProdutosDAO.Excluir(id);
+            return PartialView("_Form");
+        }
     }
 }
