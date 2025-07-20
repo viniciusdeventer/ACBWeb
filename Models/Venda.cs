@@ -9,6 +9,8 @@
         public int? Quantidade { get; set; }
         public decimal? ValorVenda { get; set; }
         public int? TipoVenda { get; set; }
+        public decimal? Subtotal { get; set; }
+        public decimal? Total { get; set; }
         public DateTime? DataCadastro { get; set; }
     }
 }

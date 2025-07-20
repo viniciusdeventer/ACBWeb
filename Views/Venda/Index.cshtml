@@ -17,11 +17,15 @@
             <div class="d-flex align-items-center">
                 <div>
                     <h4 class="text-primary fw-bold">Caixa Diário</h4>
-                    <h5 class="text-warning fw-bold">19 de Julho de 2025</h5>
+                    <h4 class="text-warning fw-bold">
+                        @(((DateTime)ViewBag.DataSelecionada).ToString("dd 'de' MMMM 'de' yyyy"))
+                    </h4>
                 </div>
                 <span class="ms-auto"><img src="~/assets/images/logo.png" style="width: 115px;"></span>
             </div>
-            @await Html.PartialAsync("_Table", Model)
+            <div id="tableVendas">
+                @await Html.PartialAsync("_Table", Model)
+            </div>
         </div>
         <div id="calendar"></div>
     </div>

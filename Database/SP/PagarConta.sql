@@ -52,7 +52,7 @@ BEGIN
     END IF;
 
     INSERT INTO Vendas (ID_Item, Data_Venda, Quantidade, Valor_Venda, Tipo_Venda)
-    VALUES (p_IdConta, p_DataPagamento, 1, p_ValorPagamento, 2);
+    VALUES (p_IdConta, p_DataPagamento, 1, p_ValorPagamento, 1);
 
     COMMIT;
 END //

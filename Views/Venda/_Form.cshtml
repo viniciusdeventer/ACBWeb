@@ -1,1 +1,40 @@
 ﻿@model ACBWeb.Models.Venda
+
+<form method="POST" id="formVenda" action="/Venda/Salvar" enctype="multipart/form-data">
+    <div class="row mb-3">
+        <div class="col-md-2">
+            <label for="IdVenda" class="form-label">ID</label>
+            <input name="IdVenda" class="form-control" readonly tabindex="-1" onfocus="this.blur()" value="@Model?.IdVenda" />
+        </div>
+
+        <div class="col-md-10">
+            <label for="IdItem" class="form-label">Produto</label>
+            <select name="IdItem" id="IdItem" class="form-select" required style="width: 100%" data-value="@Model?.IdItem" data-text="@Model?.NomeItem" @(Model?.TipoVenda == 1 ? "disabled" : "")>
+                @if (Model?.IdItem != null && !string.IsNullOrEmpty(Model?.NomeItem))
+                {
+                    <option value="@Model.IdItem" selected="selected">@Model.NomeItem</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-2">
+            <label for="Quantidade" class="form-label">Quantidade</label>
+            <input name="Quantidade" type="number" class="form-control" value="@Model?.Quantidade" />
+        </div>
+
+        <div class="col-md-3">
+            <label for="ValorVenda" class="form-label">Valor de Venda</label>
+            <input name="ValorVenda" type="text" placeholder="0,00" class="form-control" value="@Model?.ValorVenda" />
+        </div>
+
+        <div class="col-md-3 ms-auto">
+            <label for="DataVenda" class="form-label">Data de Venda</label>
+            <input type="date" name="DataVenda" id="DataVenda" class="form-control" value="@Model?.DataVenda?.ToString("yyyy-MM-dd")" />
+        </div>
+    </div>
+    <div class="d-flex">
+        <button type="button" class="btn btn-danger" onclick="excluirVenda(@Model?.IdVenda)" @(Model?.IdVenda != null ? "" : "disabled")>Excluir</button>
+        <button type="submit" class="btn btn-primary ms-auto">Salvar</button>
+    </div>
+</form>

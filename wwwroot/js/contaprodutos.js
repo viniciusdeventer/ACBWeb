@@ -72,7 +72,6 @@ function abrirModalContaProdutos(idItem) {
                 allowClear: true,
                 language: {
                     noResults: () => "Nenhum produto encontrado",
-                    inputTooShort: (args) => `Digite ao menos ${args.minimum} caractere(s)`,
                     searching: () => "Buscando...",
                     loadingMore: () => "Carregando mais resultados...",
                     errorLoading: () => "Erro ao carregar resultados"
@@ -199,3 +198,27 @@ function excluirContaProduto(idItem) {
         })
         .catch(console.error);
 }
+
+document.addEventListener("click", function (e) {
+    const link = e.target.closest("#contaProdutos-container .page-link");
+    if (!link) return;
+
+    e.preventDefault();
+
+    const pagina = link.getAttribute("data-pagina");
+    const idContaInput = document.querySelector('#modalConta [name="IdConta"]');
+    if (!idContaInput) return;
+
+    const idConta = idContaInput.value;
+
+    fetch(`/Conta/BuscarContaPorId?id=${encodeURIComponent(idConta)}&pagina=${pagina}`)
+        .then(r => {
+            if (!r.ok) throw new Error("Erro ao paginar conta produtos");
+            return r.text();
+        })
+        .then(html => {
+            const formConta = document.getElementById("formConta");
+            if (formConta) formConta.outerHTML = html;
+        })
+        .catch(console.error);
+});

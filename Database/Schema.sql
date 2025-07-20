@@ -69,6 +69,6 @@ CREATE TABLE Vendas (
     Data_Venda DATETIME NOT NULL,
     Quantidade INT NOT NULL,
     Valor_Venda DECIMAL(10,2) DEFAULT 0.00,
-    Tipo_Venda INT NOT NULL, -- 1 = Venda, 2 = Pagamento de Conta
+    Tipo_Venda INT NOT NULL, -- 0 = Venda, 1 = Pagamento de Conta
     Data_Cadastro DATETIME DEFAULT CURRENT_TIMESTAMP
 );

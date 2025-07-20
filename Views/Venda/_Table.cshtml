@@ -1,5 +1,9 @@
 ﻿@model List<ACBWeb.Models.Venda>
 
+@{
+    decimal total = Model != null && Model.Any() ? Model.First().Total ?? 0 : 0;
+}
+
 <div id="vendas-container">
     <table class='table table-hover mt-3 table-striped'>
         <thead>
@@ -21,14 +25,19 @@
                         <td class="text-center align-middle">@venda.Quantidade</td>
                         <td class="text-center align-middle">@venda.NomeItem</td>
                         <td class="text-center align-middle">@venda.ValorVenda</td>
-                        <td class="text-center align-middle">@venda.ValorVenda</td>
+                        <td class="text-center align-middle">@venda.Subtotal</td>
                     </tr>
                 }
             }
         </tbody>
     </table>
+
+    <div class="d-flex justify-content-end mt-2">
+        <h5 class="titulo fw-bold">Total - R$@total.ToString("F2")</h5>
+    </div>
+
     @{
-        ViewBag.ModalId = "modalVendas";
+        ViewBag.ModalId = "modalVenda";
     }
     @await Html.PartialAsync("_Paginacao")
 </div>
