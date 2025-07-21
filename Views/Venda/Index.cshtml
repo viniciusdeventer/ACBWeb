@@ -1,4 +1,5 @@
-﻿@model List<ACBWeb.Models.Venda>
+﻿@using System.Globalization
+@model List<ACBWeb.Models.Venda>
 
 @section Scripts {
     <script src="~/js/venda.js" asp-append-version="true"></script>
@@ -6,6 +7,11 @@
 
 @{
     ViewBag.Title = "Vendas";
+    var dataSelecionada = (DateTime)ViewBag.DataSelecionada;
+    var cultura = new CultureInfo("pt-BR");
+    var dia = dataSelecionada.Day;
+    var mes = cultura.TextInfo.ToTitleCase(dataSelecionada.ToString("MMMM", cultura)); 
+    var ano = dataSelecionada.Year;
 }
 
 @await Html.PartialAsync("_Sidebar")
@@ -14,20 +20,56 @@
 <main class="conteudo">
     <div class="hero">
         <div class="container py-4">
-            <div class="d-flex align-items-center">
-                <div>
-                    <h4 class="text-primary fw-bold">Caixa Diário</h4>
-                    <h4 class="text-warning fw-bold">
-                        @(((DateTime)ViewBag.DataSelecionada).ToString("dd 'de' MMMM 'de' yyyy"))
-                    </h4>
+            <ul class="nav nav-tabs mb-3" id="caixaTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="diario-tab" data-bs-toggle="tab" data-bs-target="#caixaDiario" type="button" role="tab" aria-controls="caixaDiario" aria-selected="true">Caixa Diário</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="mensal-tab" data-bs-toggle="tab" data-bs-target="#caixaMensal" type="button" role="tab" aria-controls="caixaMensal" aria-selected="false">Caixa Mensal</button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="caixaTabsContent">
+                <div class="tab-pane fade show active" id="caixaDiario" role="tabpanel" aria-labelledby="diario-tab">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    <h4 class="text-primary fw-bold">Caixa Diário</h4>
+                                    <h4 class="text-warning fw-bold" data-data="@dataSelecionada.ToString("yyyy-MM-dd")">
+                                        @($"{dia} de {mes} de {ano}")
+                                    </h4>
+                                </div>
+                                <span class="ms-auto"><img src="~/assets/images/logo.png" style="width: 115px;"></span>
+                            </div>
+                            <div id="tableVendas">
+                                @await Html.PartialAsync("_Table", Model)
+                            </div>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-center justify-content-center" style="min-height: 500px;">
+                            <div id="calendar"></div>
+                        </div>
+                    </div>
                 </div>
-                <span class="ms-auto"><img src="~/assets/images/logo.png" style="width: 115px;"></span>
-            </div>
-            <div id="tableVendas">
-                @await Html.PartialAsync("_Table", Model)
+
+                <div class="tab-pane fade" id="caixaMensal" role="tabpanel" aria-labelledby="mensal-tab">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    <h4 class="text-primary fw-bold">Caixa Mensal</h4>
+                                    <input type="month" class="form-control form-active"/>
+                                </div>
+                                <span class="ms-auto"><img src="~/assets/images/logo.png" style="width: 115px;"></span>
+                            </div>
+                            <div id="tableVendas">
+                                @await Html.PartialAsync("_Table", Model)
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div id="calendar"></div>
     </div>
 </main>
 

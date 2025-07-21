@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace ACBWeb.Controllers
 {
-    public class UsuarioController : Controller
+    public class LoginController : Controller
     {
         [HttpGet]
         public IActionResult Index()
@@ -18,7 +18,7 @@ namespace ACBWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(string usuario, string senha)
         {
-            var login = UsuarioDAO.Login(usuario, senha);
+            var login = LoginDAO.Login(usuario, senha);
 
             if (login != null)
             {
@@ -44,7 +44,7 @@ namespace ACBWeb.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index", "Usuario");
+            return RedirectToAction("Index", "Login");
         }
     }
 }

@@ -8,8 +8,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Usuario/Index";
-        options.LogoutPath = "/Usuario/Logout";
+        options.LoginPath = "/Login/Index";
+        options.LogoutPath = "/Login/Logout";
     });
 
 var app = builder.Build();
@@ -28,6 +28,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Usuario}/{action=Index}/{id?}");
+    pattern: "{controller=Login}/{action=Index}/{id?}");
 
 app.Run();

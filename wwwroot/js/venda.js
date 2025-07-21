@@ -203,39 +203,82 @@ document.addEventListener("DOMContentLoaded", function () {
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
+        buttonText: {
+            today: 'Hoje'
+        },
+        dayHeaderFormat: { weekday: 'narrow' },
         locale: 'pt-br',
-        headerToolbar: {
-            left: 'prev,next',
+        height: 'auto',
+        contentHeight: 400, 
+        aspectRatio: 1.2,  
+        titleFormat: (date) => {
+            const meses = [
+                '01', '02', '03', '04', '05', '06',
+                '07', '08', '09', '10', '11', '12'
+            ];
+            return `${meses[date.date.month]}/${date.date.year}`;
         },
         events: '/Venda/Index',
         dateClick: function (info) {
             atualizarVendasPorData(info.dateStr);
             calendar.select(info.date);
+
+            document.querySelectorAll('.fc-daygrid-day-number.selected')
+                .forEach(el => el.classList.remove('selected'));
+
+            const cell = info.dayEl.querySelector('.fc-daygrid-day-number');
+            if (cell) {
+                cell.classList.add('selected');
+            }
         }
     });
 
     calendar.render();
 
-    const hoje = new Date().toISOString().slice(0, 10);
+    const hoje = new Date();
+    const localDate = hoje.getFullYear() + '-' +
+        String(hoje.getMonth() + 1).padStart(2, '0') + '-' +
+        String(hoje.getDate()).padStart(2, '0');
     atualizarVendasPorData(hoje);
     calendar.select(new Date()); 
 });
 
+let dataSelecionadaAtual = new Date().toISOString().slice(0, 10);
+
+function carregarPagina(pagina) {
+    const url = `/Venda/Index?pagina=${pagina}&data=${dataSelecionadaAtual}`;
+    fetch(url)
+        .then(r => r.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, "text/html");
+            const novaTabela = doc.querySelector("#tableVendas");
+            if (novaTabela) {
+                document.querySelector("#tableVendas").innerHTML = novaTabela.innerHTML;
+            }
+        })
+        .catch(console.error);
+}
+
 function atualizarVendasPorData(dataISO) {
-    const url = `/Venda/Index?data=${dataISO}&pagina=1`; 
+    dataSelecionadaAtual = dataISO;
+    const url = `/Venda/Index?data=${dataISO}&pagina=1`;
     fetch(url)
         .then(resp => resp.text())
         .then(html => {
             const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            const novaTabela = doc.querySelector('#tableVendas');
+            const doc = parser.parseFromString(html, "text/html");
+            const novaTabela = doc.querySelector("#tableVendas");
             if (novaTabela) {
-                document.querySelector('#tableVendas').innerHTML = novaTabela.innerHTML;
+                document.querySelector("#tableVendas").innerHTML = novaTabela.innerHTML;
             }
-
-            const tituloData = doc.querySelector('h4.text-warning');
+            const tituloData = doc.querySelector("h4.text-warning");
             if (tituloData) {
-                document.querySelector('h4.text-warning').innerHTML = tituloData.innerHTML;
+                const destino = document.querySelector("h4.text-warning");
+                if (destino) {
+                    destino.innerHTML = tituloData.innerHTML;
+                    destino.dataset.data = dataISO;
+                }
             }
         })
         .catch(console.error);
@@ -243,33 +286,12 @@ function atualizarVendasPorData(dataISO) {
 
 document.addEventListener("DOMContentLoaded", function () {
     const vendasContainer = document.getElementById("tableVendas");
-
-    function carregarPagina(pagina) {
-        const dataSelecionada = document.querySelector('h4.text-warning')?.dataset?.data || new Date().toISOString().slice(0, 10);
-        fetch(`/Venda/Index?pagina=${pagina}&data=${dataSelecionada}`)
-            .then(r => r.text())
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, "text/html");
-                const novaTabela = doc.querySelector("#tableVendas");
-                if (novaTabela) {
-                    vendasContainer.innerHTML = novaTabela.innerHTML;
-                    adicionarListenersPaginacao();
-                }
-            });
-    }
-
-    function adicionarListenersPaginacao() {
-        const links = vendasContainer.querySelectorAll(".page-link");
-        links.forEach(link => {
-            link.addEventListener("click", function (e) {
-                e.preventDefault();
-                const pagina = this.getAttribute("data-pagina");
-                carregarPagina(pagina);
-            });
-        });
-    }
-
-    adicionarListenersPaginacao();
+    if (!vendasContainer) return;
+    vendasContainer.addEventListener("click", function (e) {
+        const link = e.target.closest(".page-link");
+        if (!link) return;
+        e.preventDefault();
+        const pagina = link.dataset.pagina || link.getAttribute("data-pagina") || 1;
+        carregarPagina(pagina);
+    });
 });
-

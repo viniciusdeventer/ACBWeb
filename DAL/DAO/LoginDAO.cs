@@ -6,9 +6,9 @@ using System.Security.Cryptography;
 
 namespace ACBWeb.DAL.DAO
 {
-    public class UsuarioDAO
+    public class LoginDAO
     {
-        public static Usuario Login(string usuario, string senha)
+        public static Login Login(string usuario, string senha)
         {
             using (var conn = Conexao.GetConnection())
             {
@@ -31,11 +31,11 @@ namespace ACBWeb.DAL.DAO
                             string senhaHash = reader["Senha"].ToString();
                             if (senhaHash == GerarHash(senha))
                             {
-                                return new Usuario
+                                return new Login
                                 {
                                     IdUsuario = Convert.ToInt32(reader["ID_Usuario"]),
                                     Nome = reader["Nome"].ToString(),
-                                    User = reader["Usuario"].ToString(),
+                                    Usuario = reader["Usuario"].ToString(),
                                     Status = Convert.ToInt32(reader["Status"])
                                 };
                             }

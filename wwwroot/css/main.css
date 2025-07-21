@@ -106,10 +106,6 @@ header img {
     padding-top: 75px; 
 }
 
-.titulo {
-    color: #223870;
-}
-
 .form-control:focus {
     box-shadow: none;
     outline: none;
@@ -273,7 +269,126 @@ input[readonly] {
     color: #E38C00 !important;
 }
 
-#calendar {
-    width: 1000px;
-    margin: 40px auto;
+.fc .fc-daygrid-day {
+    position: relative;
+    border: none !important;
+}
+
+.fc .fc-col-header-cell,
+.fc table {
+    border: none !important;
+    border-collapse: collapse;
+}
+
+.fc-daygrid-day-frame {
+    cursor: pointer;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.fc .fc-daygrid-day-number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+}
+
+.fc a {
+    text-decoration: none !important;
+    color: #212529;
+    font-weight: bold;
+}
+
+.fc .fc-event {
+    border: none !important;
+    text-decoration: none !important;
+}
+
+.fc .fc-daygrid-day-number.selected {
+    background-color: #223870 !important;
+    border: 3px solid #223870 !important;
+    border-radius: 0.9rem !important;
+    color: #FFFFFF !important;
+    padding: 2px 4px;
+    font-weight: bold !important;
+}
+
+.fc .fc-day-today {
+    background-color: transparent !important;
+}
+
+.fc .fc-day-today .fc-daygrid-day-number {
+    border: 3px solid #223870;
+    border-radius: 0.9rem;
+    color: #223870;
+    padding: 2px 5px;
+    font-weight: bold;
+    background-color: transparent;
+}
+
+.fc .fc-highlight {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.fc-toolbar-title {
+    font-size: 15px !important;
+    font-weight: bold;
+    color: #FF9500;
+}
+
+.fc-toolbar.fc-header-toolbar {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.fc .fc-button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+    background-color: #223870;
+}
+
+.fc .fc-button:focus {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.fc .fc-button:hover {
+    outline: none !important;
+    border-color: #223870 !important;
+    background-color: #223870 !important;
+}
+
+.fc .fc-daygrid-day,
+.fc .fc-scrollgrid,
+.fc .fc-scrollgrid td,
+.fc .fc-scrollgrid th {
+    border: none !important;
+}
+
+.fc table,
+.fc-scrollgrid {
+    border-collapse: collapse !important;
+    border: none !important;
+    outline: none !important;
+}
+
+.nav-tabs .nav-link {
+    color: #223870;
+    font-weight: 600;
+}
+
+.form-active {
+    border: 1px solid #FF9500 !important;
+    border-bottom: 3px solid #FF9500 !important;
+}
+
+.form-active:focus {
+    border: 1px solid #FF9500 !important;
+    border-bottom: 3px solid #FF9500 !important;
 }
