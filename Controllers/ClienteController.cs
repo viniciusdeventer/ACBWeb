@@ -42,7 +42,7 @@ namespace ACBWeb.Controllers
         }
 
         [HttpGet]
-        public IActionResult BuscarPorId(int id, int pagina = 1, int tamanhoPagina = 10)
+        public IActionResult BuscarPorId(int id, int situacao = 0, int pagina = 1, int tamanhoPagina = 10)
         {
             ViewBag.IdCliente = id;
 
@@ -50,7 +50,7 @@ namespace ACBWeb.Controllers
             if (cliente == null)
                 return NotFound();
 
-            var contas = contaDAO.GetContas(id);
+            var contas = contaDAO.GetContas(id, situacao);
 
             int totalItens = contas.Count;
             var contasPaginadas = contas
@@ -62,8 +62,8 @@ namespace ACBWeb.Controllers
             ViewBag.PaginaAtual = pagina;
             ViewBag.TotalItens = totalItens;
             ViewBag.TamanhoPagina = tamanhoPagina;
-
             ViewBag.Contas = contasPaginadas;
+            ViewBag.Situacao = situacao;
 
             return PartialView("_Form", cliente);
         }

@@ -155,6 +155,7 @@ document.getElementById('btnConfirmarPagamento')?.addEventListener('click', func
         .then(r => r.text())
         .then(html => {
             document.querySelector('#formCliente').outerHTML = html;
+            initSituacaoChange();
         })
         .catch(err => console.error(err));
 });
@@ -196,6 +197,32 @@ function excluirConta(idConta) {
         .then(response => response.text())
         .then(html => {
             document.querySelector('#formCliente').outerHTML = html;
+            initSituacaoChange();
         })
         .catch(console.error);
 }
+
+document.addEventListener("click", function (e) {
+    const link = e.target.closest("#contas-container .page-link");
+    if (!link) return;
+
+    e.preventDefault();
+
+    const pagina = link.getAttribute("data-pagina");
+    const idClientenput = document.querySelector('#modalCliente [name="IdCliente"]');
+    if (!idClientenput) return;
+
+    const idCliente = idClientenput.value;
+
+    fetch(`/Cliente/BuscarPorId?id=${encodeURIComponent(idCliente)}&pagina=${pagina}`)
+        .then(r => {
+            if (!r.ok) throw new Error("Erro ao paginar contas");
+            return r.text();
+        })
+        .then(html => {
+            const formCliente = document.getElementById("formCliente");
+            if (formCliente) formCliente.outerHTML = html;
+            initSituacaoChange();
+        })
+        .catch(console.error);
+});

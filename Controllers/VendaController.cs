@@ -28,6 +28,7 @@ namespace ACBWeb.Controllers
             ViewBag.PaginaAtual = pagina;
             ViewBag.TotalItens = totalItens;
             ViewBag.TamanhoPagina = tamanhoPagina;
+            ViewBag.VendasMensal = vendaDAO.GetVendasMensal(dataFiltro);
 
             return View(vendasPaginadas);
         }
@@ -56,5 +57,18 @@ namespace ACBWeb.Controllers
             vendaDAO.Excluir(id);
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public IActionResult CaixaMensal(string mes)
+        {
+            if (string.IsNullOrEmpty(mes))
+                mes = DateTime.Today.ToString("yyyy-MM");
+
+            var data = DateTime.ParseExact(mes + "-01", "yyyy-MM-dd", null);
+
+            var vendasMensal = vendaDAO.GetVendasMensal(data);
+            return PartialView("_Panel", vendasMensal);
+        }
+
     }
 }

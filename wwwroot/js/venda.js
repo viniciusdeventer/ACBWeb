@@ -295,3 +295,19 @@ document.addEventListener("DOMContentLoaded", function () {
         carregarPagina(pagina);
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const inputMes = document.querySelector('#caixaMensal input[type="month"]');
+    const divTable = document.getElementById('panelVendas');
+
+    if (inputMes) {
+        inputMes.addEventListener('change', function () {
+            const mesSelecionado = inputMes.value; 
+            fetch(`/Venda/CaixaMensal?mes=${mesSelecionado}`)
+                .then(response => response.text())
+                .then(html => {
+                    divTable.innerHTML = html;
+                });
+        });
+    }
+});

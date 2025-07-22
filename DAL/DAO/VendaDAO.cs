@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using MySql.Data.MySqlClient;
+﻿using ACBWeb.DAL;
 using ACBWeb.Models;
-using ACBWeb.DAL;
+using ACBWeb.ViewModels;
+using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 
 namespace ACBWeb.DAL.DAO
 {
@@ -164,6 +165,66 @@ namespace ACBWeb.DAL.DAO
                 }
             }
             return null;
+        }
+
+        public List<CaixaMensalVM> GetVendasMensal(DateTime data)
+        {
+            var lista = new List<CaixaMensalVM>();
+            using (var conn = Conexao.GetConnection())
+            {
+                if (conn == null) return lista;
+
+                var dataInicio = new DateTime(data.Year, data.Month, 1);
+                var dataFim = dataInicio.AddMonths(1);
+
+                string sql = @"SELECT Dia,
+                                      Subtotal,
+                                      Total,
+                                      Total_Itens,
+                                      Maior_Valor,
+                                      ROUND(Media_Diaria, 2) AS Media_Diaria
+                               FROM (
+                                   SELECT Dia,
+                                          Subtotal,
+                                          SUM(Subtotal) OVER () AS Total,
+                                          SUM(Total_Itens) OVER () AS Total_Itens,
+                                          MAX(Subtotal) OVER () AS Maior_Valor,
+                                          AVG(Subtotal) OVER () AS Media_Diaria
+                                   FROM (
+                                       SELECT DATE(V.Data_Venda) AS Dia,
+                                              SUM(V.Quantidade * V.Valor_Venda) AS Subtotal,
+                                              SUM(V.Quantidade) AS Total_Itens
+                                       FROM Vendas V
+                                       WHERE V.Data_Venda >= @DataInicio
+                                         AND V.Data_Venda < @DataFim
+                                       GROUP BY DATE(V.Data_Venda)
+                                   ) Diarios
+                               ) Agregados
+                               ORDER BY Dia";
+
+                using (var cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@DataInicio", dataInicio);
+                    cmd.Parameters.AddWithValue("@DataFim", dataFim);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            lista.Add(new CaixaMensalVM
+                            {
+                                Dia = reader.GetDateTime("Dia"),
+                                Subtotal = reader.GetDecimal("Subtotal"),
+                                Total = reader.GetDecimal("Total"),
+                                TotalItens = reader.GetInt32("Total_Itens"),
+                                MaiorValor = reader.GetDecimal("Maior_Valor"),
+                                MediaDiaria = reader.GetDecimal("Media_Diaria")
+                            });
+                        }
+                    }
+                }
+            }
+            return lista;
         }
     }
 }

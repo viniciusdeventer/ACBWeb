@@ -8,7 +8,7 @@ namespace ACBWeb.DAL.DAO
 {
     public class ContaDAO
     {
-        public List<Conta> GetContas(int IdCliente)
+        public List<Conta> GetContas(int IdCliente, int situacao)
         {
             var lista = new List<Conta>();
 
@@ -20,10 +20,15 @@ namespace ACBWeb.DAL.DAO
                                SUM(CP.Quantidade * CP.Valor_Unitario) AS Valor_Total                               
                                FROM Contas C
                                LEFT JOIN Contas_Produtos CP ON C.ID_Conta = CP.ID_Conta 
-                               WHERE ID_Cliente = @IdCliente 
-                               AND C.Situacao IN (0, 2)
-                               GROUP BY C.ID_Conta, C.ID_Cliente
-                               ORDER BY C.Data_Cadastro";
+                               WHERE ID_Cliente = @IdCliente";
+
+                if (situacao == 0)
+                    sql += " AND C.Situacao = 0 ";
+                else if (situacao > 0)
+                    sql += " AND C.Situacao IN (1, 2) "; 
+
+                sql += @"GROUP BY C.ID_Conta, C.ID_Cliente
+                         ORDER BY C.Data_Cadastro";
 
                 using (var cmd = new MySqlCommand(sql, conn))
                 {
@@ -155,7 +160,7 @@ namespace ACBWeb.DAL.DAO
             {
                 if (conn == null) return null;
 
-                string sql = @"UPDATE Contas SET Situacao = 2 WHERE ID_Conta = @ID_Conta";
+                string sql = @"UPDATE Contas SET Situacao = 3 WHERE ID_Conta = @ID_Conta";
 
                 using (var cmd = new MySqlCommand(sql, conn))
                 {

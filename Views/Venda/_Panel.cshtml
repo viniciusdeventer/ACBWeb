@@ -1,0 +1,57 @@
+﻿@model List<ACBWeb.ViewModels.CaixaMensalVM>
+
+<div class="row">
+    <div class="col-md-9">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="text-center">Dia</th>
+                    <th class="text-center">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center align-middle">@item.Dia.ToString("dd/MM/yyyy")</td>
+                        <td class="text-center align-middle">@item.Subtotal.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-3 d-flex flex-column justify-content-center">
+        <div class="card shadow-sm mb-3 w-100">
+            <div class="card-body text-center">
+                <h5 class="card-title text-primary">Total de Vendas</h5>
+                <p class="card-text fs-5 fw-bold">
+                    @(Model.FirstOrDefault()?.Total != null ? Model.FirstOrDefault()?.Total.ToString("C") : "R$ 0,00")
+                </p>
+            </div>
+        </div>
+        <div class="card shadow-sm mb-3 w-100">
+            <div class="card-body text-center">
+                <h5 class="card-title text-primary">Melhor Dia</h5>
+                <p class="card-text fs-5 fw-bold">
+                    @(Model.FirstOrDefault()?.MaiorValor != null ? Model.FirstOrDefault()?.MaiorValor.ToString("C") : "R$ 0,00")
+                </p>
+            </div>
+        </div>
+        <div class="card shadow-sm mb-3 w-100">
+            <div class="card-body text-center">
+                <h5 class="card-title text-primary">Média Diária</h5>
+                <p class="card-text fs-5 fw-bold">
+                    @(Model.FirstOrDefault()?.MediaDiaria != null ? Model.FirstOrDefault()?.MediaDiaria.ToString("C") : "R$ 0,00")
+                </p>
+            </div>
+        </div>
+        <div class="card shadow-sm mb-3 w-100">
+            <div class="card-body text-center">
+                <h5 class="card-title text-primary">Total de Itens</h5>
+                <p class="card-text fs-5 fw-bold">
+                    @(Model.FirstOrDefault()?.TotalItens != null ? Model.FirstOrDefault()?.TotalItens : "0")
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

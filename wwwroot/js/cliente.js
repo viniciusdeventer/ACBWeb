@@ -6,7 +6,23 @@
             document.querySelector('#modalCliente .modal-body').innerHTML = html;
             var modal = new bootstrap.Modal(document.getElementById('modalCliente'));
             modal.show();
+            initSituacaoChange();
         });
+}
+
+function initSituacaoChange() {
+    const selectSituacao = document.querySelector('#Situacao');
+    if (selectSituacao) {
+        selectSituacao.addEventListener('change', function () {
+            const situacao = this.value;
+            fetch(`/Cliente/BuscarPorId/${idClienteSelecionado}?situacao=${situacao}`)
+                .then(response => response.text())
+                .then(html => {
+                    document.querySelector('#modalCliente .modal-body').innerHTML = html;
+                    initSituacaoChange(); 
+                });
+        });
+    }
 }
 
 let modalClienteLimpo;
