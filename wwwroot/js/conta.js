@@ -124,6 +124,7 @@ document.addEventListener('submit', function (e) {
         .then(r => r.text())
         .then(html => {
             document.querySelector('#formCliente').outerHTML = html;
+            setTimeout(initSituacaoChange, 0);
         })
         .catch(err => console.error(err));
 });

@@ -13,7 +13,7 @@ namespace ACBWeb.Controllers
         [HttpPost]
         public IActionResult Salvar(Conta conta)
         {
-            if (conta.Situacao == 1 && conta.IdConta > 0)
+            if (conta.Situacao == 0 && conta.IdConta > 0)
             {
                 contaDAO.PagarConta(conta); 
             }

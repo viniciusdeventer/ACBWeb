@@ -12,17 +12,19 @@
 
 function initSituacaoChange() {
     const selectSituacao = document.querySelector('#Situacao');
-    if (selectSituacao) {
-        selectSituacao.addEventListener('change', function () {
-            const situacao = this.value;
-            fetch(`/Cliente/BuscarPorId/${idClienteSelecionado}?situacao=${situacao}`)
-                .then(response => response.text())
-                .then(html => {
-                    document.querySelector('#modalCliente .modal-body').innerHTML = html;
-                    initSituacaoChange(); 
-                });
-        });
+    if (!selectSituacao) {
+        return;
     }
+
+    selectSituacao.addEventListener('change', function () {
+        const situacao = this.value;
+        fetch(`/Cliente/BuscarPorId/${idClienteSelecionado}?situacao=${situacao}`)
+            .then(response => response.text())
+            .then(html => {
+                document.querySelector('#modalCliente .modal-body').innerHTML = html;
+                initSituacaoChange();
+            });
+    });
 }
 
 let modalClienteLimpo;
