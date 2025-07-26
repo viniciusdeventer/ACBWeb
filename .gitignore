@@ -362,5 +362,8 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-# Produtos
-wwwroot/imagens/
+# Ignora tudo dentro da pasta produtos
+wwwroot/imagens/produtos/*
+
+# Mas não ignora o .gitkeep
+!wwwroot/imagens/produtos/.gitkeep

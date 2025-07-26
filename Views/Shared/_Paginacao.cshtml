@@ -5,6 +5,9 @@
     string termo = ViewBag.Termo ?? "";
 
     int totalPaginas = (int)Math.Ceiling((double)totalItens / tamanhoPagina);
+
+    int inicio = Math.Max(1, paginaAtual - 1);
+    int fim = Math.Min(totalPaginas, paginaAtual + 1);
 }
 
 <nav class="d-flex justify-content-between align-items-center">
@@ -17,7 +20,7 @@
                 </a>
             </li>
 
-            @for (int i = 1; i <= totalPaginas; i++)
+            @for (int i = inicio; i <= fim; i++)
             {
                 <li class="page-item @(i == paginaAtual ? "active" : "")">
                     <a href="#" class="page-link rounded-circle" data-pagina="@i">@i</a>

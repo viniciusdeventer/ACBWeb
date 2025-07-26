@@ -2,6 +2,9 @@
 using ACBWeb.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Formats.Png;
 
 namespace ACBWeb.Controllers
 {
@@ -34,7 +37,7 @@ namespace ACBWeb.Controllers
         {
             if (ImagemUpload != null && ImagemUpload.Length > 0)
             {
-                var nomeArquivo = Guid.NewGuid().ToString() + Path.GetExtension(ImagemUpload.FileName);
+                var nomeArquivo = Guid.NewGuid().ToString().ToUpper() + Path.GetExtension(ImagemUpload.FileName);
 
                 var caminhoPasta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens/produtos");
 
@@ -43,9 +46,24 @@ namespace ACBWeb.Controllers
 
                 var caminhoCompleto = Path.Combine(caminhoPasta, nomeArquivo);
 
-                using (var stream = new FileStream(caminhoCompleto, FileMode.Create))
+                using (var stream = ImagemUpload.OpenReadStream())
+                using (var image = SixLabors.ImageSharp.Image.Load(stream))
                 {
-                    ImagemUpload.CopyTo(stream);
+                    image.Mutate(x => x.Resize(new ResizeOptions
+                    {
+                        Size = new Size(600, 0), 
+                        Mode = ResizeMode.Max
+                    }));
+
+                    var encoder = new SixLabors.ImageSharp.Formats.Png.PngEncoder
+                    {
+                        CompressionLevel = PngCompressionLevel.Level8, 
+                    };
+
+                    using (var outputStream = new FileStream(caminhoCompleto, FileMode.Create))
+                    {
+                        image.SaveAsPng(outputStream, encoder);
+                    }
                 }
 
                 produto.Imagem = $"imagens/produtos/{nomeArquivo}";
