@@ -65,7 +65,7 @@ namespace ACBWeb.DAL.DAO
 
                 using (var cmd = new MySqlCommand(sql, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Termo", termo + "%");
+                    cmd.Parameters.AddWithValue("@Termo", "%" + termo + "%");
 
                     using (var reader = cmd.ExecuteReader())
                     {
