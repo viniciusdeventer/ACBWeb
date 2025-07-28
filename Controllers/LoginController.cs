@@ -33,7 +33,7 @@ namespace ACBWeb.Controllers
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity));
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Venda");
             }
 
             ViewBag.Erro = "Usuário ou senha inválidos.";
