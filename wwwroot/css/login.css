@@ -1,20 +1,35 @@
 ﻿body {
     font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, #223870, #1f4e79);
 }
 
 .custom-card {
     max-width: 420px;
     width: 100%;
-    border-radius: 12px;
-    background: #fff;
+    background: #FFFFFF;
 }
 
-.input-icon {
-    position: absolute;
-    left: 10px;
-    top: 38px;
-    color: #888;
-    font-size: 16px;
+.col-left {
+    background-color: #223870; 
+    width: 50%;
+    height: 100vh;
 }
 
+.col-right {
+    width: 50%;
+    background-color: #FFFFFF !important;
+}
+
+.form-custom {
+    border: 1px solid #223870 !important;
+    border-bottom: 3px solid #223870 !important;
+}
+
+.form-custom:focus {
+    border: 1px solid #223870 !important;
+    border-bottom: 3px solid #223870 !important;
+}
+
+.btn-warning {
+    border-radius: 1rem;
+    font-weight: bold;
+}
